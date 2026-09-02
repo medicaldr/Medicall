@@ -3,666 +3,560 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Medicall</title>
+<title>پرونده پزشکی</title>
 
 <style>
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
 }
 
-body{
-    margin:0;
-    padding:20px;
-    font-family:Tahoma,Arial,sans-serif;
-    background:#eef3f8;
+body {
+    margin: 0;
+    font-family: Tahoma, Arial, sans-serif;
+    background: #f3f6f9;
+    color: #222;
 }
 
-.box{
-    max-width:750px;
-    margin:20px auto;
-    background:white;
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
 }
 
-h1,h2{
-    text-align:center;
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
 }
 
-input,textarea,button{
-    width:100%;
-    padding:13px;
-    margin:7px 0;
-    border-radius:9px;
-    border:1px solid #ccc;
-    font-family:inherit;
-    font-size:15px;
+h1, h2, h3 {
+    margin-top: 0;
 }
 
-textarea{
-    min-height:80px;
-    resize:vertical;
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
 }
 
-button{
-    border:none;
-    background:#2563eb;
-    color:white;
-    cursor:pointer;
+textarea {
+    min-height: 90px;
+    resize: vertical;
 }
 
-.logout{
-    background:#dc2626;
+button {
+    border: none;
+    padding: 11px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    margin: 4px;
+    background: #1976d2;
+    color: white;
 }
 
-.edit{
-    background:#f59e0b;
+button:hover {
+    opacity: 0.9;
 }
 
-.delete{
-    background:#dc2626;
+.danger {
+    background: #d32f2f;
 }
 
-.back{
-    background:#64748b;
+.success {
+    background: #2e7d32;
 }
 
-.patient{
-    background:#f8fafc;
-    border:1px solid #ddd;
-    padding:15px;
-    margin-top:12px;
-    border-radius:12px;
+.gray {
+    background: #666;
 }
 
-.patient strong{
-    font-size:18px;
+.patient {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    background: #fafafa;
 }
 
-.error{
-    color:red;
-    text-align:center;
+.history {
+    border-right: 5px solid #1976d2;
+    padding: 15px;
+    margin: 12px 0;
+    background: #f8fbff;
+    border-radius: 8px;
 }
 
-.success{
-    color:green;
-    text-align:center;
+.hidden {
+    display: none;
 }
 
-.hidden{
-    display:none;
-}
-
-.info{
-    line-height:2;
+.small {
+    color: #666;
+    font-size: 13px;
 }
 </style>
 </head>
 
 <body>
 
+<div class="container">
 
-<!-- ================= صفحه ورود ================= -->
+<!-- LOGIN -->
+<div id="loginPage" class="card">
+    <h1>🔐 ورود به سیستم</h1>
 
-<div class="box" id="loginPage">
+    <label>نام کاربری</label>
+    <input id="username" type="text">
 
-    <h1>🏥 Medicall</h1>
+    <label>رمز عبور</label>
+    <input id="password" type="password">
 
-    <h2>ورود به سامانه</h2>
+    <button onclick="login()">ورود</button>
 
-    <input
-        type="text"
-        id="username"
-        placeholder="نام کاربری">
-
-    <input
-        type="password"
-        id="password"
-        placeholder="رمز عبور">
-
-    <button onclick="login()">
-        🔐 ورود
-    </button>
-
-    <p id="loginError" class="error"></p>
-
+    <p id="loginError" style="color:red;"></p>
 </div>
 
 
-<!-- ================= صفحه اصلی ================= -->
+<!-- MAIN -->
+<div id="mainPage" class="hidden">
 
-<div class="box hidden" id="mainPage">
+    <div class="card">
+        <h1>🏥 سیستم پرونده پزشکی</h1>
 
-    <h1>🏥 Medicall</h1>
+        <button onclick="showRegister()">➕ ثبت بیمار جدید</button>
 
-    <button class="logout" onclick="logout()">
-        🚪 خروج
-    </button>
+        <button class="gray" onclick="logout()">خروج</button>
+    </div>
 
 
-    <!-- فرم ثبت بیمار -->
+    <!-- REGISTER / EDIT PATIENT -->
+    <div id="patientForm" class="card hidden">
 
-    <div id="formSection">
+        <h2 id="formTitle">ثبت بیمار جدید</h2>
 
-        <h2>👤 ثبت بیمار جدید</h2>
+        <label>نام و نام خانوادگی</label>
+        <input id="name">
+
+        <label>کد ملی</label>
+        <input id="nationalCode">
+
+        <label>شماره پرونده</label>
+        <input id="fileNumber">
+
+        <label>نام پدر</label>
+        <input id="fatherName">
+
+        <label>آدرس</label>
+        <textarea id="address"></textarea>
+
+        <label>بیمه اصلی</label>
+        <input id="mainInsurance">
+
+        <label>بیمه تکمیلی</label>
+        <input id="supplementaryInsurance">
+
+        <label>شماره بیمه تکمیلی</label>
+        <input id="supplementaryNumber">
+
+        <label>شماره تماس</label>
+        <input id="phone">
+
+        <button id="savePatientButton" class="success" onclick="savePatient()">
+            ثبت بیمار
+        </button>
+
+        <button class="gray" onclick="cancelForm()">
+            انصراف
+        </button>
+    </div>
+
+
+    <!-- SEARCH -->
+    <div id="searchBox" class="card">
+
+        <h2>🔎 جستجوی بیمار</h2>
 
         <input
-            id="name"
-            placeholder="نام و نام خانوادگی">
+            id="search"
+            type="text"
+            placeholder="نام، کد ملی یا شماره پرونده..."
+            oninput="searchPatients()"
+        >
 
-        <input
-            id="nationalCode"
-            placeholder="کد ملی">
+        <div id="patientList"></div>
+    </div>
 
-        <input
-            id="fileNumber"
-            placeholder="شماره پرونده">
 
-        <input
-            id="fatherName"
-            placeholder="نام پدر">
+    <!-- PATIENT PROFILE -->
+    <div id="profilePage" class="card hidden">
 
-        <textarea
-            id="address"
-            placeholder="آدرس"></textarea>
+        <button class="gray" onclick="backToPatients()">
+            ← بازگشت
+        </button>
 
-        <input
-            id="insurance"
-            placeholder="نوع بیمه اصلی">
+        <h2>👤 پرونده بیمار</h2>
 
-        <input
-            id="supplementaryInsurance"
-            placeholder="بیمه تکمیلی">
+        <div id="profileInfo"></div>
 
-        <input
-            id="supplementaryInsuranceNumber"
-            placeholder="شماره بیمه تکمیلی">
+        <hr>
 
-        <input
-            id="phone"
-            placeholder="شماره تماس">
+        <h2>🩺 سوابق پزشکی</h2>
 
-        <button onclick="savePatient()">
-            💾 ثبت بیمار
+        <button onclick="showHistoryForm()" class="success">
+            ➕ افزودن سابقه پزشکی
+        </button>
+
+        <!-- HISTORY FORM -->
+        <div id="historyForm" class="hidden">
+
+            <div class="card">
+
+                <h3 id="historyTitle">ثبت سابقه جدید</h3>
+
+                <label>تاریخ مراجعه</label>
+                <input id="historyDate" type="date">
+
+                <label>علت مراجعه</label>
+                <textarea id="historyReason"></textarea>
+
+                <label>تشخیص</label>
+                <textarea id="historyDiagnosis"></textarea>
+
+                <label>داروها / درمان</label>
+                <textarea id="historyMedicine"></textarea>
+
+                <label>توضیحات پزشک</label>
+                <textarea id="historyNotes"></textarea>
+
+                <button class="success" onclick="saveHistory()">
+                    ذخیره سابقه
+                </button>
+
+                <button class="gray" onclick="cancelHistory()">
+                    انصراف
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="historyList"></div>
+
+        <hr>
+
+        <button onclick="editCurrentPatient()">
+            ✏️ ویرایش اطلاعات بیمار
+        </button>
+
+        <button class="danger" onclick="deleteCurrentPatient()">
+            🗑 حذف بیمار
         </button>
 
     </div>
 
-
-    <!-- جستجو -->
-
-    <h2>🔎 جستجوی بیمار</h2>
-
-    <input
-        id="search"
-        placeholder="نام، کد ملی یا شماره پرونده..."
-        oninput="searchPatients()">
-
-    <div id="patients"></div>
-
 </div>
-
-
-<!-- ================= پرونده اختصاصی ================= -->
-
-<div class="box hidden" id="profilePage">
-
-    <h1>🗂️ پرونده بیمار</h1>
-
-    <div id="profileContent" class="info"></div>
-
-    <button class="edit" onclick="editPatient()">
-        ✏️ ویرایش اطلاعات
-    </button>
-
-    <button class="delete" onclick="deleteCurrentPatient()">
-        🗑️ حذف بیمار
-    </button>
-
-    <button class="back" onclick="backToMain()">
-        ↩️ بازگشت
-    </button>
 
 </div>
 
 
 <script>
 
-
-/* ================= ورود ================= */
-
-const USERNAME = "admin";
-const PASSWORD = "1234";
-
-let patients =
-    JSON.parse(
-        localStorage.getItem("medicalPatients")
-    ) || [];
+let patients = JSON.parse(localStorage.getItem("medicalPatients")) || [];
 
 let currentPatientIndex = null;
+let editingPatientIndex = null;
+let editingHistoryIndex = null;
 
 
-function login(){
+// LOGIN
+function login() {
 
-    const username =
-        document.getElementById("username").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-    const password =
-        document.getElementById("password").value;
+    if (username === "admin" && password === "1234") {
 
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("mainPage").classList.remove("hidden");
 
-    if(
-        username === USERNAME &&
-        password === PASSWORD
-    ){
+        displayPatients();
 
-        document.getElementById("loginPage")
-            .classList.add("hidden");
+    } else {
 
-        document.getElementById("mainPage")
-            .classList.remove("hidden");
-
-        document.getElementById("loginError")
-            .innerText = "";
-
-        displayPatients(patients);
-
-    }else{
-
-        document.getElementById("loginError")
-            .innerText =
+        document.getElementById("loginError").innerText =
             "نام کاربری یا رمز عبور اشتباه است.";
 
     }
-
 }
 
 
-/* ================= خروج ================= */
+// LOGOUT
+function logout() {
 
-function logout(){
+    document.getElementById("mainPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
 
-    document.getElementById("mainPage")
-        .classList.add("hidden");
-
-    document.getElementById("profilePage")
-        .classList.add("hidden");
-
-    document.getElementById("loginPage")
-        .classList.remove("hidden");
-
-    document.getElementById("username").value="";
-    document.getElementById("password").value="";
-
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
 }
 
 
-/* ================= ثبت بیمار ================= */
+// SHOW REGISTER
+function showRegister() {
 
-function savePatient(){
+    editingPatientIndex = null;
+
+    document.getElementById("patientForm").classList.remove("hidden");
+
+    document.getElementById("formTitle").innerText =
+        "ثبت بیمار جدید";
+
+    document.getElementById("savePatientButton").innerText =
+        "ثبت بیمار";
+
+    clearPatientForm();
+
+    document.getElementById("profilePage").classList.add("hidden");
+}
+
+
+// CLEAR PATIENT FORM
+function clearPatientForm() {
+
+    document.getElementById("name").value = "";
+    document.getElementById("nationalCode").value = "";
+    document.getElementById("fileNumber").value = "";
+    document.getElementById("fatherName").value = "";
+    document.getElementById("address").value = "";
+    document.getElementById("mainInsurance").value = "";
+    document.getElementById("supplementaryInsurance").value = "";
+    document.getElementById("supplementaryNumber").value = "";
+    document.getElementById("phone").value = "";
+}
+
+
+// SAVE PATIENT
+function savePatient() {
 
     const patient = {
 
-        name:
-            document.getElementById("name")
-            .value.trim(),
+        name: document.getElementById("name").value,
+        nationalCode: document.getElementById("nationalCode").value,
+        fileNumber: document.getElementById("fileNumber").value,
+        fatherName: document.getElementById("fatherName").value,
+        address: document.getElementById("address").value,
+        mainInsurance: document.getElementById("mainInsurance").value,
+        supplementaryInsurance: document.getElementById("supplementaryInsurance").value,
+        supplementaryNumber: document.getElementById("supplementaryNumber").value,
+        phone: document.getElementById("phone").value,
 
-        nationalCode:
-            document.getElementById("nationalCode")
-            .value.trim(),
-
-        fileNumber:
-            document.getElementById("fileNumber")
-            .value.trim(),
-
-        fatherName:
-            document.getElementById("fatherName")
-            .value.trim(),
-
-        address:
-            document.getElementById("address")
-            .value.trim(),
-
-        insurance:
-            document.getElementById("insurance")
-            .value.trim(),
-
-        supplementaryInsurance:
-            document.getElementById(
-                "supplementaryInsurance"
-            ).value.trim(),
-
-        supplementaryInsuranceNumber:
-            document.getElementById(
-                "supplementaryInsuranceNumber"
-            ).value.trim(),
-
-        phone:
-            document.getElementById("phone")
-            .value.trim()
+        history:
+            editingPatientIndex !== null
+            ? (patients[editingPatientIndex].history || [])
+            : []
 
     };
 
 
-    if(!patient.name){
+    if (!patient.name.trim()) {
 
         alert("لطفاً نام بیمار را وارد کنید.");
-
         return;
+
     }
 
 
-    patients.push(patient);
+    if (editingPatientIndex !== null) {
 
-    saveDatabase();
+        patients[editingPatientIndex] = patient;
 
-    alert("بیمار با موفقیت ثبت شد ✅");
+        alert("اطلاعات بیمار ویرایش شد.");
 
-    clearForm();
+    } else {
 
-    displayPatients(patients);
+        patients.push(patient);
 
-}
+        alert("بیمار با موفقیت ثبت شد.");
 
+    }
 
-/* ================= ذخیره ================= */
-
-function saveDatabase(){
 
     localStorage.setItem(
         "medicalPatients",
         JSON.stringify(patients)
     );
 
+
+    editingPatientIndex = null;
+
+    document.getElementById("patientForm").classList.add("hidden");
+
+    displayPatients();
 }
 
 
-/* ================= پاک کردن فرم ================= */
+// DISPLAY PATIENTS
+function displayPatients(list = patients) {
 
-function clearForm(){
+    const container = document.getElementById("patientList");
 
-    document.getElementById("name").value="";
-    document.getElementById("nationalCode").value="";
-    document.getElementById("fileNumber").value="";
-    document.getElementById("fatherName").value="";
-    document.getElementById("address").value="";
-    document.getElementById("insurance").value="";
-    document.getElementById(
-        "supplementaryInsurance"
-    ).value="";
-    document.getElementById(
-        "supplementaryInsuranceNumber"
-    ).value="";
-    document.getElementById("phone").value="";
+    container.innerHTML = "";
 
-}
-
-
-/* ================= نمایش بیماران ================= */
-
-function displayPatients(list){
-
-    const container =
-        document.getElementById("patients");
-
-    container.innerHTML="";
-
-
-    if(list.length === 0){
+    if (list.length === 0) {
 
         container.innerHTML =
-            "<p style='text-align:center'>بیماری پیدا نشد.</p>";
+            "<p>هنوز بیماری ثبت نشده است.</p>";
 
         return;
+
     }
 
 
-    list.forEach(patient => {
+    list.forEach((patient, index) => {
 
-        const realIndex =
-            patients.indexOf(patient);
+        const realIndex = patients.indexOf(patient);
 
-        const div =
-            document.createElement("div");
+        container.innerHTML += `
 
-        div.className="patient";
+        <div class="patient">
 
-
-        div.innerHTML = `
-
-            <strong>
-                👤 ${escapeHTML(patient.name)}
-            </strong>
+            <h3>${escapeHTML(patient.name)}</h3>
 
             <p>
-                شماره پرونده:
-                ${escapeHTML(patient.fileNumber)}
+            کد ملی:
+            ${escapeHTML(patient.nationalCode || "-")}
             </p>
 
-            <button
-                onclick="openProfile(${realIndex})">
-                🗂️ مشاهده پرونده
+            <p>
+            شماره پرونده:
+            ${escapeHTML(patient.fileNumber || "-")}
+            </p>
+
+            <button onclick="openProfile(${realIndex})">
+                مشاهده پرونده
             </button>
 
+        </div>
+
         `;
-
-
-        container.appendChild(div);
 
     });
 
 }
 
 
-/* ================= جستجو ================= */
+// SEARCH
+function searchPatients() {
 
-function searchPatients(){
-
-    const search =
-        document.getElementById("search")
-        .value.trim().toLowerCase();
-
-
-    const result =
-        patients.filter(patient =>
-
-            patient.name
-                .toLowerCase()
-                .includes(search)
-
-            ||
-
-            patient.nationalCode
-                .toLowerCase()
-                .includes(search)
-
-            ||
-
-            patient.fileNumber
-                .toLowerCase()
-                .includes(search)
-
-        );
+    const text =
+        document.getElementById("search").value
+        .trim()
+        .toLowerCase();
 
 
-    displayPatients(result);
+    if (!text) {
 
-}
-
-
-/* ================= باز کردن پرونده ================= */
-
-function openProfile(index){
-
-    currentPatientIndex = index;
-
-    const patient =
-        patients[index];
-
-
-    document.getElementById("mainPage")
-        .classList.add("hidden");
-
-    document.getElementById("profilePage")
-        .classList.remove("hidden");
-
-
-    document.getElementById("profileContent")
-        .innerHTML = `
-
-        <p><b>👤 نام و نام خانوادگی:</b>
-        ${escapeHTML(patient.name)}</p>
-
-        <p><b>🪪 کد ملی:</b>
-        ${escapeHTML(patient.nationalCode)}</p>
-
-        <p><b>📁 شماره پرونده:</b>
-        ${escapeHTML(patient.fileNumber)}</p>
-
-        <p><b>👨 نام پدر:</b>
-        ${escapeHTML(patient.fatherName)}</p>
-
-        <p><b>🏠 آدرس:</b>
-        ${escapeHTML(patient.address)}</p>
-
-        <p><b>💳 بیمه اصلی:</b>
-        ${escapeHTML(patient.insurance)}</p>
-
-        <p><b>➕ بیمه تکمیلی:</b>
-        ${escapeHTML(
-            patient.supplementaryInsurance
-        )}</p>
-
-        <p><b>🔢 شماره بیمه تکمیلی:</b>
-        ${escapeHTML(
-            patient.supplementaryInsuranceNumber
-        )}</p>
-
-        <p><b>📞 شماره تماس:</b>
-        ${escapeHTML(patient.phone)}</p>
-
-        `;
-
-}
-
-
-/* ================= ویرایش ================= */
-
-function editPatient(){
-
-    const patient =
-        patients[currentPatientIndex];
-
-
-    document.getElementById("profilePage")
-        .classList.add("hidden");
-
-    document.getElementById("mainPage")
-        .classList.remove("hidden");
-
-
-    document.getElementById("name").value =
-        patient.name;
-
-    document.getElementById("nationalCode").value =
-        patient.nationalCode;
-
-    document.getElementById("fileNumber").value =
-        patient.fileNumber;
-
-    document.getElementById("fatherName").value =
-        patient.fatherName;
-
-    document.getElementById("address").value =
-        patient.address;
-
-    document.getElementById("insurance").value =
-        patient.insurance;
-
-    document.getElementById(
-        "supplementaryInsurance"
-    ).value =
-        patient.supplementaryInsurance;
-
-    document.getElementById(
-        "supplementaryInsuranceNumber"
-    ).value =
-        patient.supplementaryInsuranceNumber;
-
-    document.getElementById("phone").value =
-        patient.phone;
-
-    alert(
-        "اطلاعات بیمار را تغییر بده و سپس ثبت بیمار را بزن."
-    );
-
-}
-
-
-/* ================= حذف ================= */
-
-function deleteCurrentPatient(){
-
-    if(currentPatientIndex === null)
+        displayPatients();
         return;
-
-
-    const answer =
-        confirm(
-            "آیا از حذف این بیمار مطمئن هستید؟"
-        );
-
-
-    if(answer){
-
-        patients.splice(
-            currentPatientIndex,
-            1
-        );
-
-        saveDatabase();
-
-        currentPatientIndex = null;
-
-        backToMain();
 
     }
 
+
+    const results = patients.filter(patient =>
+
+        (patient.name || "").toLowerCase().includes(text) ||
+
+        (patient.nationalCode || "")
+            .toLowerCase()
+            .includes(text) ||
+
+        (patient.fileNumber || "")
+            .toLowerCase()
+            .includes(text)
+
+    );
+
+
+    displayPatients(results);
 }
 
 
-/* ================= بازگشت ================= */
+// OPEN PROFILE
+function openProfile(index) {
 
-function backToMain(){
+    currentPatientIndex = index;
+
+    const patient = patients[index];
+
+    document.getElementById("searchBox")
+        .classList.add("hidden");
+
+    document.getElementById("patientForm")
+        .classList.add("hidden");
+
+    document.getElementById("profilePage")
+        .classList.remove("hidden");
+
+
+    document.getElementById("profileInfo").innerHTML = `
+
+        <p><strong>نام و نام خانوادگی:</strong>
+        ${escapeHTML(patient.name)}</p>
+
+        <p><strong>کد ملی:</strong>
+        ${escapeHTML(patient.nationalCode || "-")}</p>
+
+        <p><strong>شماره پرونده:</strong>
+        ${escapeHTML(patient.fileNumber || "-")}</p>
+
+        <p><strong>نام پدر:</strong>
+        ${escapeHTML(patient.fatherName || "-")}</p>
+
+        <p><strong>آدرس:</strong>
+        ${escapeHTML(patient.address || "-")}</p>
+
+        <p><strong>بیمه اصلی:</strong>
+        ${escapeHTML(patient.mainInsurance || "-")}</p>
+
+        <p><strong>بیمه تکمیلی:</strong>
+        ${escapeHTML(patient.supplementaryInsurance || "-")}</p>
+
+        <p><strong>شماره بیمه تکمیلی:</strong>
+        ${escapeHTML(patient.supplementaryNumber || "-")}</p>
+
+        <p><strong>شماره تماس:</strong>
+        ${escapeHTML(patient.phone || "-")}</p>
+
+    `;
+
+
+    displayHistory();
+}
+
+
+// EDIT PATIENT
+function editCurrentPatient() {
+
+    const patient = patients[currentPatientIndex];
+
+    editingPatientIndex = currentPatientIndex;
+
 
     document.getElementById("profilePage")
         .classList.add("hidden");
 
-    document.getElementById("mainPage")
+    document.getElementById("patientForm")
         .classList.remove("hidden");
 
-    displayPatients(patients);
 
-}
+    document.getElementById("formTitle").innerText =
+        "ویرایش اطلاعات بیمار";
 
-
-/* ================= امنیت نمایش ================= */
-
-function escapeHTML(text){
-
-    return String(text || "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-</script>
-
-</body>
-</html>
+    document.getElementById("savePatientButton").innerText
             
