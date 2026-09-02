@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medicall | پرونده پزشکی</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Tahoma,Arial,sans-serif;
+    background:#eef5f7;
+    color:#263238;
+}
+
+button,input,textarea{
+    font-family:inherit;
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+#loginPage{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:linear-gradient(135deg,#061b32,#075b78,#10a99f);
+}
+
+.login-card{
+    width:100%;
+    max-width:400px;
+    background:white;
+    border-radius:28px;
+    padding:35px 28px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+
+.medical-logo{
+    width:95px;
+    height:95px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#087c98,#14b7a7);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 30px rgba(0,100,130,.30);
+}
+
+.medical-logo span{
+    color:white;
+    font-size:60px;
+    font-weight:bold;
+}
+
+.login-card h1{
+    margin:0;
+    color:#075b78;
+    font-size:32px;
+    letter-spacing:3px;
+}
+
+.login-subtitle{
+    color:#718087;
+    margin:8px 0 28px;
+}
+
+.input-group{
+    text-align:right;
+    margin-bottom:17px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:bold;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px;
+    border:2px solid #dce6ea;
+    border-radius:13px;
+    font-size:16px;
+    outline:none;
+}
+
+.input-group input:focus{
+    border-color:#0aa49d;
+}
+
+.login-button{
+    width:100%;
+    border:0;
+    padding:15px;
+    border-radius:13px;
+    color:white;
+    background:linear-gradient(135deg,#087f9b,#10ad9f);
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.login-button:active{
+    transform:scale(.98);
+}
+
+#loginError{
+    color:#d32f2f;
+    min-height:20px;
+    margin:12px 0 0;
+}
+
+.login-footer{
+    color:#a0aaae;
+    font-size:11px;
+    margin:20px 0 0;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+#mainPage{
+    min-height:100vh;
+    padding-bottom:40px;
+}
+
+.header{
+    background:linear-gradient(135deg,#075b78,#0b9d9d);
+    color:white;
+    padding:22px 18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
+}
+
+.header-content{
+    max-width:900px;
+    margin:auto;
+}
+
+.header h1{
+    margin:0;
+    font-size:25px;
+}
+
+.header p{
+    margin:7px 0 0;
+    opacity:.9;
+}
+
+.container{
+    max-width:900px;
+    margin:20px auto;
+    padding:0 15px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.07);
+}
+
+.card h2{
+    margin-top:0;
+    color:#075b78;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+button{
+    border:0;
+    border-radius:11px;
+    padding:12px 18px;
+    background:#087f9b;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+}
+
+button:hover{
+    opacity:.92;
+}
+
+button.gray{
+    background:#69777d;
+}
+
+button.success{
+    background:#14966f;
+}
+
+button.danger{
+    background:#d64545;
+}
+
+button.orange{
+    background:#d88922;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+    display:flex;
+    gap:10px;
+}
+
+.search-box input{
+    flex:1;
+    padding:13px;
+    border:2px solid #dce6ea;
+    border-radius:11px;
+    font-size:16px;
+}
+
+.patient-card{
+    border:1px solid #e0e8eb;
+    border-radius:15px;
+    padding:17px;
+    margin-top:12px;
+}
+
+.patient-card h3{
+    margin:0 0 8px;
+    color:#075b78;
+}
+
+.patient-info{
+    line-height:2;
+    color:#4d5a60;
+}
+
+.patient-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:12px;
+    border:2px solid #dce6ea;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+}
+
+.form-group textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:#0aa49d;
+}
+
+.form-buttons{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+/* =========================
+   TOOLS
+========================= */
+
+.tools{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.empty{
+    text-align:center;
+    color:#89969b;
+    padding:25px 5px;
+}
+
+.status{
+    margin-top:12px;
+    padding:10px;
+    border-radius:9px;
+    background:#edf8f6;
+    color:#167c68;
+    display:none;
+}
+
+@media(max-width:600px){
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .search-box{
+        flex-direction:column;
+    }
+
+    .actions button,
+    .tools button{
+        width:100%;
+    }
+
+    .login-card{
+        padding:30px 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     LOGIN PAGE
+========================= -->
+
+<div id="loginPage">
+
+    <div class="login-card">
+
+        <div class="medical-logo">
+            <span>✚</span>
+        </div>
+
+        <h1>MEDICALL</h1>
+
+        <p class="login-subtitle">
+            سیستم مدیریت پرونده پزشکی
+        </p>
+
+        <div class="input-group">
+            <label for="username">نام کاربری</label>
+            <input
+                id="username"
+                type="text"
+                placeholder="نام کاربری"
+                autocomplete="username">
+        </div>
+
+        <div class="input-group">
+            <label for="password">رمز عبور</label>
+            <input
+                id="password"
+                type="password"
+                placeholder="رمز عبور"
+                autocomplete="current-password">
+        </div>
+
+        <button
+            class="login-button"
+            type="button"
+            onclick="login()">
+            ورود به سیستم
+        </button>
+
+        <p id="loginError"></p>
+
+        <p class="login-footer">
+            Medical Records Management
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MAIN PAGE
+========================= -->
+
+<div id="mainPage" class="hidden">
+
+    <div class="header">
+        <div class="header-content">
+            <h1>🏥 سیستم پرونده پزشکی Medicall</h1>
+            <p>مدیریت و جستجوی پرونده بیماران</p>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- ACTIONS -->
+
+        <div class="card">
+
+            <h2>مدیریت بیماران</h2>
+
+            <div class="actions">
+
+                <button
+                    type="button"
+                    onclick="showPatientForm()">
+                    ➕ ثبت بیمار جدید
+                </button>
+
+                <button
+                    type="button"
+                    class="gray"
+                    onclick="logout()">
+                    🚪 خروج
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="card">
+
+            <h2>🔎 جستجوی بیمار</h2>
+
+            <div class="search-box">
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="نام، کد ملی یا شماره تماس را وارد کنید..."
+                    oninput="searchPatients()">
+
+                <button
+                    type="button"
+                    onclick="searchPatients()">
+                    جستجو
+                </button>
+
+            </div>
+
+            <div id="patientList"></div>
+
+        </div>
+
+
+        <!-- PATIENT FORM -->
+
+        <div
+            id="patientForm"
+            class="card hidden">
+
+            <h2 id="formTitle">
+                ثبت بیمار جدید
+            </h2>
+
+            <input
+                id="editId"
+                type="hidden">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>نام و نام خانوادگی *</label>
+                    <input id="name">
+                </div>
+
+                <div class="form-group">
+                    <label>کد ملی *</label>
+                    <input id="nationalCode" inputmode="numeric">
+                </div>
+
+                <div class="form-group">
+                    <label>نام پدر</label>
+                    <input id="fatherName">
+                </div>
+
+                <div class="form-group">
+                    <label>شماره تماس</label>
+                    <input id="phone" inputmode="tel">
+                </div>
+
+                <div class="form-group full">
+                    <label>آدرس</label>
+                    <textarea id="address"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>بیمه اصلی</label>
+                    <input id="mainInsurance">
+                </div>
+
+                <div class="form-group">
+                    <label>بیمه تکمیلی</label>
+                    <input id="supplementaryInsurance">
+                </div>
+
+                <div class="form-group">
+                    <label>شماره بیمه تکمیلی</label>
+                    <input id="supplementaryNumber">
+                </div>
+
+            </div>
+
+            <div class="form-buttons">
+
+                <button
+                    type="button"
+                    class="success"
+                    onclick="savePatient()">
+                    💾 ذخیره پرونده
+                </button>
+
+                <button
+                    type="button"
+                    class="gray"
+                    onclick="cancelPatientForm()">
+                    انصراف
+                </button>
+
+            </div>
+
+            <div id="formStatus" class="
