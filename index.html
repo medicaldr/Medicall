@@ -3,63 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Medicall</title>
 
 <style>
+*{
+    box-sizing:border-box;
+}
+
 body{
-    font-family:Tahoma,Arial,sans-serif;
-    background:#eef3f8;
     margin:0;
     padding:20px;
+    font-family:Tahoma,Arial,sans-serif;
+    background:#eef3f8;
 }
+
 .box{
-    max-width:700px;
-    margin:30px auto;
+    max-width:750px;
+    margin:20px auto;
     background:white;
     padding:25px;
-    border-radius:16px;
-    box-shadow:0 4px 15px rgba(0,0,0,.1);
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
-h1,h2{text-align:center}
+
+h1,h2{
+    text-align:center;
+}
+
 input,textarea,button{
     width:100%;
-    box-sizing:border-box;
-    padding:12px;
+    padding:13px;
     margin:7px 0;
-    border-radius:8px;
+    border-radius:9px;
     border:1px solid #ccc;
+    font-family:inherit;
     font-size:15px;
 }
-textarea{min-height:80px}
+
+textarea{
+    min-height:80px;
+    resize:vertical;
+}
+
 button{
+    border:none;
     background:#2563eb;
     color:white;
-    border:0;
     cursor:pointer;
 }
-.logout{background:#dc2626}
+
+.logout{
+    background:#dc2626;
+}
+
+.edit{
+    background:#f59e0b;
+}
+
+.delete{
+    background:#dc2626;
+}
+
+.back{
+    background:#64748b;
+}
+
 .patient{
     background:#f8fafc;
     border:1px solid #ddd;
     padding:15px;
-    margin-top:15px;
-    border-radius:10px;
+    margin-top:12px;
+    border-radius:12px;
 }
-.delete{background:#dc2626}
+
+.patient strong{
+    font-size:18px;
+}
+
 .error{
     color:red;
     text-align:center;
+}
+
+.success{
+    color:green;
+    text-align:center;
+}
+
+.hidden{
+    display:none;
+}
+
+.info{
+    line-height:2;
 }
 </style>
 </head>
 
 <body>
 
-<!-- صفحه ورود -->
+
+<!-- ================= صفحه ورود ================= -->
+
 <div class="box" id="loginPage">
 
     <h1>🏥 Medicall</h1>
-    <h2>ورود</h2>
+
+    <h2>ورود به سامانه</h2>
 
     <input
         type="text"
@@ -71,50 +122,76 @@ button{
         id="password"
         placeholder="رمز عبور">
 
-    <button onclick="login()">ورود</button>
+    <button onclick="login()">
+        🔐 ورود
+    </button>
 
     <p id="loginError" class="error"></p>
 
 </div>
 
 
-<!-- برنامه اصلی -->
-<div class="box" id="mainPage" style="display:none">
+<!-- ================= صفحه اصلی ================= -->
 
-    <h1>🏥 پرونده پزشکی</h1>
+<div class="box hidden" id="mainPage">
+
+    <h1>🏥 Medicall</h1>
 
     <button class="logout" onclick="logout()">
-        خروج
+        🚪 خروج
     </button>
 
-    <h2>ثبت بیمار</h2>
 
-    <input id="name" placeholder="نام و نام خانوادگی">
+    <!-- فرم ثبت بیمار -->
 
-    <input id="nationalCode" placeholder="کد ملی">
+    <div id="formSection">
 
-    <input id="fileNumber" placeholder="شماره پرونده">
+        <h2>👤 ثبت بیمار جدید</h2>
 
-    <input id="fatherName" placeholder="نام پدر">
+        <input
+            id="name"
+            placeholder="نام و نام خانوادگی">
 
-    <textarea id="address" placeholder="آدرس"></textarea>
+        <input
+            id="nationalCode"
+            placeholder="کد ملی">
 
-    <input id="insurance" placeholder="نوع بیمه اصلی">
+        <input
+            id="fileNumber"
+            placeholder="شماره پرونده">
 
-    <input
-        id="supplementaryInsurance"
-        placeholder="بیمه تکمیلی">
+        <input
+            id="fatherName"
+            placeholder="نام پدر">
 
-    <input
-        id="supplementaryInsuranceNumber"
-        placeholder="شماره بیمه تکمیلی">
+        <textarea
+            id="address"
+            placeholder="آدرس"></textarea>
 
-    <input id="phone" placeholder="شماره تماس">
+        <input
+            id="insurance"
+            placeholder="نوع بیمه اصلی">
 
-    <button onclick="savePatient()">
-        💾 ثبت بیمار
-    </button>
+        <input
+            id="supplementaryInsurance"
+            placeholder="بیمه تکمیلی">
 
+        <input
+            id="supplementaryInsuranceNumber"
+            placeholder="شماره بیمه تکمیلی">
+
+        <input
+            id="phone"
+            placeholder="شماره تماس">
+
+        <button onclick="savePatient()">
+            💾 ثبت بیمار
+        </button>
+
+    </div>
+
+
+    <!-- جستجو -->
 
     <h2>🔎 جستجوی بیمار</h2>
 
@@ -128,16 +205,45 @@ button{
 </div>
 
 
+<!-- ================= پرونده اختصاصی ================= -->
+
+<div class="box hidden" id="profilePage">
+
+    <h1>🗂️ پرونده بیمار</h1>
+
+    <div id="profileContent" class="info"></div>
+
+    <button class="edit" onclick="editPatient()">
+        ✏️ ویرایش اطلاعات
+    </button>
+
+    <button class="delete" onclick="deleteCurrentPatient()">
+        🗑️ حذف بیمار
+    </button>
+
+    <button class="back" onclick="backToMain()">
+        ↩️ بازگشت
+    </button>
+
+</div>
+
+
 <script>
+
+
+/* ================= ورود ================= */
 
 const USERNAME = "admin";
 const PASSWORD = "1234";
 
 let patients =
-    JSON.parse(localStorage.getItem("medicalPatients")) || [];
+    JSON.parse(
+        localStorage.getItem("medicalPatients")
+    ) || [];
+
+let currentPatientIndex = null;
 
 
-// ورود
 function login(){
 
     const username =
@@ -146,64 +252,82 @@ function login(){
     const password =
         document.getElementById("password").value;
 
-    if(username === USERNAME && password === PASSWORD){
 
-        document.getElementById("loginPage").style.display =
-            "none";
+    if(
+        username === USERNAME &&
+        password === PASSWORD
+    ){
 
-        document.getElementById("mainPage").style.display =
-            "block";
+        document.getElementById("loginPage")
+            .classList.add("hidden");
 
-        document.getElementById("loginError").innerText = "";
+        document.getElementById("mainPage")
+            .classList.remove("hidden");
+
+        document.getElementById("loginError")
+            .innerText = "";
 
         displayPatients(patients);
 
     }else{
 
-        document.getElementById("loginError").innerText =
+        document.getElementById("loginError")
+            .innerText =
             "نام کاربری یا رمز عبور اشتباه است.";
 
     }
+
 }
 
 
-// خروج
+/* ================= خروج ================= */
+
 function logout(){
 
-    document.getElementById("mainPage").style.display =
-        "none";
+    document.getElementById("mainPage")
+        .classList.add("hidden");
 
-    document.getElementById("loginPage").style.display =
-        "block";
+    document.getElementById("profilePage")
+        .classList.add("hidden");
 
-    document.getElementById("username").value = "";
-    document.getElementById("password").value = "";
+    document.getElementById("loginPage")
+        .classList.remove("hidden");
+
+    document.getElementById("username").value="";
+    document.getElementById("password").value="";
 
 }
 
 
-// ثبت بیمار
+/* ================= ثبت بیمار ================= */
+
 function savePatient(){
 
     const patient = {
 
         name:
-            document.getElementById("name").value.trim(),
+            document.getElementById("name")
+            .value.trim(),
 
         nationalCode:
-            document.getElementById("nationalCode").value.trim(),
+            document.getElementById("nationalCode")
+            .value.trim(),
 
         fileNumber:
-            document.getElementById("fileNumber").value.trim(),
+            document.getElementById("fileNumber")
+            .value.trim(),
 
         fatherName:
-            document.getElementById("fatherName").value.trim(),
+            document.getElementById("fatherName")
+            .value.trim(),
 
         address:
-            document.getElementById("address").value.trim(),
+            document.getElementById("address")
+            .value.trim(),
 
         insurance:
-            document.getElementById("insurance").value.trim(),
+            document.getElementById("insurance")
+            .value.trim(),
 
         supplementaryInsurance:
             document.getElementById(
@@ -216,86 +340,74 @@ function savePatient(){
             ).value.trim(),
 
         phone:
-            document.getElementById("phone").value.trim()
+            document.getElementById("phone")
+            .value.trim()
+
     };
 
 
     if(!patient.name){
 
         alert("لطفاً نام بیمار را وارد کنید.");
-        return;
 
+        return;
     }
 
 
     patients.push(patient);
 
-    localStorage.setItem(
-        "medicalPatients",
-        JSON.stringify(patients)
-    );
-
+    saveDatabase();
 
     alert("بیمار با موفقیت ثبت شد ✅");
 
     clearForm();
 
     displayPatients(patients);
-}
-
-
-// پاک کردن فرم
-function clearForm(){
-
-    document.getElementById("name").value = "";
-    document.getElementById("nationalCode").value = "";
-    document.getElementById("fileNumber").value = "";
-    document.getElementById("fatherName").value = "";
-    document.getElementById("address").value = "";
-    document.getElementById("insurance").value = "";
-    document.getElementById("supplementaryInsurance").value = "";
-    document.getElementById(
-        "supplementaryInsuranceNumber"
-    ).value = "";
-    document.getElementById("phone").value = "";
 
 }
 
 
-// جستجو
-function searchPatients(){
+/* ================= ذخیره ================= */
 
-    const search =
-        document.getElementById("search").value
-        .trim()
-        .toLowerCase();
+function saveDatabase(){
 
-    const filtered = patients.filter(patient =>
-
-        patient.name.toLowerCase().includes(search) ||
-
-        patient.nationalCode
-            .toLowerCase()
-            .includes(search) ||
-
-        patient.fileNumber
-            .toLowerCase()
-            .includes(search)
-
+    localStorage.setItem(
+        "medicalPatients",
+        JSON.stringify(patients)
     );
 
-    displayPatients(filtered);
+}
+
+
+/* ================= پاک کردن فرم ================= */
+
+function clearForm(){
+
+    document.getElementById("name").value="";
+    document.getElementById("nationalCode").value="";
+    document.getElementById("fileNumber").value="";
+    document.getElementById("fatherName").value="";
+    document.getElementById("address").value="";
+    document.getElementById("insurance").value="";
+    document.getElementById(
+        "supplementaryInsurance"
+    ).value="";
+    document.getElementById(
+        "supplementaryInsuranceNumber"
+    ).value="";
+    document.getElementById("phone").value="";
 
 }
 
 
-// نمایش بیماران
+/* ================= نمایش بیماران ================= */
+
 function displayPatients(list){
 
     const container =
         document.getElementById("patients");
 
-    container.innerHTML = "";
+    container.innerHTML="";
 
 
     if(list.length === 0){
@@ -304,48 +416,38 @@ function displayPatients(list){
             "<p style='text-align:center'>بیماری پیدا نشد.</p>";
 
         return;
-
     }
 
 
-    list.forEach((patient) => {
+    list.forEach(patient => {
+
+        const realIndex =
+            patients.indexOf(patient);
 
         const div =
             document.createElement("div");
 
-        div.className = "patient";
+        div.className="patient";
+
 
         div.innerHTML = `
 
-            <strong>👤 ${escapeHTML(patient.name)}</strong>
+            <strong>
+                👤 ${escapeHTML(patient.name)}
+            </strong>
 
-            <p>کد ملی:
-            ${escapeHTML(patient.nationalCode)}</p>
+            <p>
+                شماره پرونده:
+                ${escapeHTML(patient.fileNumber)}
+            </p>
 
-            <p>شماره پرونده:
-            ${escapeHTML(patient.fileNumber)}</p>
-
-            <p>نام پدر:
-            ${escapeHTML(patient.fatherName)}</p>
-
-            <p>آدرس:
-            ${escapeHTML(patient.address)}</p>
-
-            <p>بیمه اصلی:
-            ${escapeHTML(patient.insurance)}</p>
-
-            <p>بیمه تکمیلی:
-            ${escapeHTML(patient.supplementaryInsurance)}</p>
-
-            <p>شماره بیمه تکمیلی:
-            ${escapeHTML(
-                patient.supplementaryInsuranceNumber
-            )}</p>
-
-            <p>شماره تماس:
-            ${escapeHTML(patient.phone)}</p>
+            <button
+                onclick="openProfile(${realIndex})">
+                🗂️ مشاهده پرونده
+            </button>
 
         `;
+
 
         container.appendChild(div);
 
@@ -354,10 +456,203 @@ function displayPatients(list){
 }
 
 
-// جلوگیری از مشکل نمایش کدهای HTML
+/* ================= جستجو ================= */
+
+function searchPatients(){
+
+    const search =
+        document.getElementById("search")
+        .value.trim().toLowerCase();
+
+
+    const result =
+        patients.filter(patient =>
+
+            patient.name
+                .toLowerCase()
+                .includes(search)
+
+            ||
+
+            patient.nationalCode
+                .toLowerCase()
+                .includes(search)
+
+            ||
+
+            patient.fileNumber
+                .toLowerCase()
+                .includes(search)
+
+        );
+
+
+    displayPatients(result);
+
+}
+
+
+/* ================= باز کردن پرونده ================= */
+
+function openProfile(index){
+
+    currentPatientIndex = index;
+
+    const patient =
+        patients[index];
+
+
+    document.getElementById("mainPage")
+        .classList.add("hidden");
+
+    document.getElementById("profilePage")
+        .classList.remove("hidden");
+
+
+    document.getElementById("profileContent")
+        .innerHTML = `
+
+        <p><b>👤 نام و نام خانوادگی:</b>
+        ${escapeHTML(patient.name)}</p>
+
+        <p><b>🪪 کد ملی:</b>
+        ${escapeHTML(patient.nationalCode)}</p>
+
+        <p><b>📁 شماره پرونده:</b>
+        ${escapeHTML(patient.fileNumber)}</p>
+
+        <p><b>👨 نام پدر:</b>
+        ${escapeHTML(patient.fatherName)}</p>
+
+        <p><b>🏠 آدرس:</b>
+        ${escapeHTML(patient.address)}</p>
+
+        <p><b>💳 بیمه اصلی:</b>
+        ${escapeHTML(patient.insurance)}</p>
+
+        <p><b>➕ بیمه تکمیلی:</b>
+        ${escapeHTML(
+            patient.supplementaryInsurance
+        )}</p>
+
+        <p><b>🔢 شماره بیمه تکمیلی:</b>
+        ${escapeHTML(
+            patient.supplementaryInsuranceNumber
+        )}</p>
+
+        <p><b>📞 شماره تماس:</b>
+        ${escapeHTML(patient.phone)}</p>
+
+        `;
+
+}
+
+
+/* ================= ویرایش ================= */
+
+function editPatient(){
+
+    const patient =
+        patients[currentPatientIndex];
+
+
+    document.getElementById("profilePage")
+        .classList.add("hidden");
+
+    document.getElementById("mainPage")
+        .classList.remove("hidden");
+
+
+    document.getElementById("name").value =
+        patient.name;
+
+    document.getElementById("nationalCode").value =
+        patient.nationalCode;
+
+    document.getElementById("fileNumber").value =
+        patient.fileNumber;
+
+    document.getElementById("fatherName").value =
+        patient.fatherName;
+
+    document.getElementById("address").value =
+        patient.address;
+
+    document.getElementById("insurance").value =
+        patient.insurance;
+
+    document.getElementById(
+        "supplementaryInsurance"
+    ).value =
+        patient.supplementaryInsurance;
+
+    document.getElementById(
+        "supplementaryInsuranceNumber"
+    ).value =
+        patient.supplementaryInsuranceNumber;
+
+    document.getElementById("phone").value =
+        patient.phone;
+
+    alert(
+        "اطلاعات بیمار را تغییر بده و سپس ثبت بیمار را بزن."
+    );
+
+}
+
+
+/* ================= حذف ================= */
+
+function deleteCurrentPatient(){
+
+    if(currentPatientIndex === null)
+        return;
+
+
+    const answer =
+        confirm(
+            "آیا از حذف این بیمار مطمئن هستید؟"
+        );
+
+
+    if(answer){
+
+        patients.splice(
+            currentPatientIndex,
+            1
+        );
+
+        saveDatabase();
+
+        currentPatientIndex = null;
+
+        backToMain();
+
+    }
+
+}
+
+
+/* ================= بازگشت ================= */
+
+function backToMain(){
+
+    document.getElementById("profilePage")
+        .classList.add("hidden");
+
+    document.getElementById("mainPage")
+        .classList.remove("hidden");
+
+    displayPatients(patients);
+
+}
+
+
+/* ================= امنیت نمایش ================= */
+
 function escapeHTML(text){
 
-    return String(text)
+    return String(text || "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
@@ -370,3 +665,4 @@ function escapeHTML(text){
 
 </body>
 </html>
+            
