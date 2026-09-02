@@ -2,6 +2,50 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Medicall</title>
+<style>
+body{font-family:tahoma;background:#eef2f7;margin:0;padding:20px}.box{max-width:700px;margin:auto;background:#fff;padding:20px;border-radius:16px}input,button{width:100%;padding:12px;margin:6px 0}button{background:#2563eb;color:#fff;border:none}.card{border:1px solid #ddd;border-radius:10px;padding:10px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="box" id="login">
+<h2>ورود به Medicall</h2>
+<input id="user" placeholder="نام کاربری">
+<input id="pass" type="password" placeholder="رمز عبور">
+<button onclick="login()">ورود</button>
+<p id="msg" style="color:red"></p>
+</div>
+
+<div class="box" id="app" style="display:none">
+<h2>پرونده پزشکی</h2>
+<button onclick="logout()">خروج</button>
+<input id="name" placeholder="نام و نام خانوادگی">
+<input id="code" placeholder="کد ملی">
+<input id="father" placeholder="نام پدر">
+<input id="insurance" placeholder="بیمه اصلی">
+<input id="extra" placeholder="بیمه تکمیلی">
+<input id="phone" placeholder="شماره تماس">
+<button onclick="save()">ثبت بیمار</button>
+<input id="search" placeholder="جستجو..." oninput="show()">
+<div id="list"></div>
+</div>
+
+<script>
+const USER='admin',PASS='1234';
+let db=JSON.parse(localStorage.getItem('patients')||'[]');
+function login(){if(user.value===USER&&pass.value===PASS){localStorage.setItem('login','1');login.style.display='none';app.style.display='block';show()}else msg.innerText='نام کاربری یا رمز اشتباه است';}
+function logout(){localStorage.removeItem('login');location.reload()}
+function save(){db.push({n:name.value,c:code.value,f:father.value,i:insurance.value,e:extra.value,p:phone.value});localStorage.setItem('patients',JSON.stringify(db));name.value=code.value=father.value=insurance.value=extra.value=phone.value='';show()}
+function show(){let s=search.value||'';list.innerHTML='';db.filter(x=>x.n.includes(s)||x.c.includes(s)).forEach((x,i)=>{list.innerHTML+=`<div class=card><b>${x.n}</b><br>کدملی:${x.c}<br>پدر:${x.f}<br>بیمه:${x.i}<br>تکمیلی:${x.e}<br>تلفن:${x.p}<br><button onclick='del(${i})'>حذف</button></div>`})}
+function del(i){db.splice(i,1);localStorage.setItem('patients',JSON.stringify(db));show()}
+if(localStorage.getItem('login')){login.style.display='none';app.style.display='block';show()}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>پرونده پزشکی</title>
