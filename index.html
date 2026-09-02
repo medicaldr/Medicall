@@ -94,13 +94,6 @@ button{
     color:white;
 }
 
-.login-button:active,
-.primary:active,
-.danger:active,
-.secondary:active{
-    transform:scale(.98);
-}
-
 #mainPage{
     display:none;
     padding:20px;
@@ -185,12 +178,63 @@ button{
     padding:15px;
 }
 
+.section-title{
+    margin-top:25px;
+    border-bottom:1px solid #dce8ee;
+    padding-bottom:8px;
+}
+
+.eye-box{
+    background:#f7fafc;
+    border:1px solid #dce8ee;
+    border-radius:15px;
+    padding:15px;
+    margin-top:10px;
+}
+
+.eye-box h4{
+    margin-top:0;
+}
+
+.canvas-wrapper{
+    width:100%;
+    overflow:hidden;
+}
+
+#pad{
+    display:block;
+    width:100%;
+    max-width:700px;
+    height:220px;
+    background:white;
+    border:2px dashed #9fb5c0;
+    border-radius:12px;
+    touch-action:none;
+}
+
+.patient-note{
+    background:#f7fafc;
+    border-radius:12px;
+    padding:12px;
+    white-space:pre-wrap;
+    line-height:1.9;
+}
+
+.handwriting{
+    width:100%;
+    max-width:500px;
+    border:1px solid #dce8ee;
+    border-radius:10px;
+    margin-top:8px;
+}
+
 .backup-note{
     color:#667788;
     line-height:1.8;
 }
 
 @media(max-width:600px){
+
     #mainPage{
         padding:12px;
     }
@@ -218,9 +262,7 @@ button{
 
         <h1>Medicall</h1>
 
-        <p>
-            سیستم مدیریت پرونده بیماران
-        </p>
+        <p>سیستم مدیریت پرونده بیماران</p>
 
         <input
             id="username"
@@ -244,10 +286,7 @@ button{
             ورود به سیستم
         </button>
 
-        <p
-            id="loginMessage"
-            class="message"
-        ></p>
+        <p id="loginMessage" class="message"></p>
 
     </div>
 
@@ -260,13 +299,9 @@ button{
 
     <div class="header">
 
-        <h1>
-            ⚕️ پرونده بیماران
-        </h1>
+        <h1>⚕️ پرونده بیماران</h1>
 
-        <p>
-            مدیریت اطلاعات بیماران
-        </p>
+        <p>مدیریت اطلاعات بیماران</p>
 
         <button
             type="button"
@@ -283,7 +318,7 @@ button{
 
     <div class="card">
 
-        <h2>
+        <h2 id="formTitle">
             ➕ ثبت بیمار جدید
         </h2>
 
@@ -314,11 +349,29 @@ button{
                 placeholder="شماره تماس"
             >
 
+            <input
+                id="reason"
+                type="text"
+                placeholder="علت مراجعه"
+            >
+
+            <input
+                id="disease"
+                type="text"
+                placeholder="بیماری‌های خاص"
+            >
+
+            <div>
+                <label>تاریخ آخرین ویزیت</label>
+                <input
+                    id="visit"
+                    type="date"
+                >
+            </div>
+
             <select id="mainInsurance">
 
-                <option value="">
-                    نوع بیمه اصلی
-                </option>
+                <option value="">نوع بیمه اصلی</option>
 
                 <option value="تأمین اجتماعی">
                     تأمین اجتماعی
@@ -356,10 +409,178 @@ button{
 
         </div>
 
+
         <textarea
             id="address"
             placeholder="آدرس"
         ></textarea>
+
+
+        <!-- ================= EYE ================= -->
+
+        <h3 class="section-title">
+            👁️ اطلاعات بینایی
+        </h3>
+
+
+        <div class="eye-box">
+
+            <h4>درجه چشم راست (OD)</h4>
+
+            <div class="grid">
+
+                <input
+                    id="rightEyeSPH"
+                    type="text"
+                    placeholder="SPH"
+                >
+
+                <input
+                    id="rightEyeCYL"
+                    type="text"
+                    placeholder="CYL"
+                >
+
+                <input
+                    id="rightEyeAXIS"
+                    type="text"
+                    placeholder="AXIS"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="eye-box">
+
+            <h4>درجه چشم چپ (OS)</h4>
+
+            <div class="grid">
+
+                <input
+                    id="leftEyeSPH"
+                    type="text"
+                    placeholder="SPH"
+                >
+
+                <input
+                    id="leftEyeCYL"
+                    type="text"
+                    placeholder="CYL"
+                >
+
+                <input
+                    id="leftEyeAXIS"
+                    type="text"
+                    placeholder="AXIS"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="eye-box">
+
+            <h4>درجه عینک راست (OD)</h4>
+
+            <div class="grid">
+
+                <input
+                    id="rightGlassSPH"
+                    type="text"
+                    placeholder="SPH"
+                >
+
+                <input
+                    id="rightGlassCYL"
+                    type="text"
+                    placeholder="CYL"
+                >
+
+                <input
+                    id="rightGlassAXIS"
+                    type="text"
+                    placeholder="AXIS"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="eye-box">
+
+            <h4>درجه عینک چپ (OS)</h4>
+
+            <div class="grid">
+
+                <input
+                    id="leftGlassSPH"
+                    type="text"
+                    placeholder="SPH"
+                >
+
+                <input
+                    id="leftGlassCYL"
+                    type="text"
+                    placeholder="CYL"
+                >
+
+                <input
+                    id="leftGlassAXIS"
+                    type="text"
+                    placeholder="AXIS"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= DOCTOR NOTE ================= -->
+
+        <h3 class="section-title">
+            🩺 شرح حال پزشک
+        </h3>
+
+        <textarea
+            id="note"
+            placeholder="شرح حال بیمار را اینجا بنویسید..."
+        ></textarea>
+
+
+        <h4>
+            ✍️ شرح حال دست‌نویس
+        </h4>
+
+        <div class="canvas-wrapper">
+
+            <canvas
+                id="pad"
+                width="700"
+                height="220"
+            ></canvas>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                type="button"
+                class="secondary"
+                id="clearPadButton"
+            >
+                پاک کردن دست‌نوشته
+            </button>
+
+        </div>
+
+
+        <br>
+
 
         <button
             type="button"
@@ -369,18 +590,17 @@ button{
             ذخیره بیمار
         </button>
 
+
         <button
             type="button"
             class="secondary"
             id="clearButton"
         >
-            پاک کردن
+            پاک کردن فرم
         </button>
 
-        <p
-            id="formMessage"
-            class="message"
-        ></p>
+
+        <p id="formMessage" class="message"></p>
 
     </div>
 
@@ -389,9 +609,7 @@ button{
 
     <div class="card">
 
-        <h2>
-            🔎 جستجوی بیمار
-        </h2>
+        <h2>🔎 جستجوی بیمار</h2>
 
         <input
             id="search"
@@ -408,13 +626,13 @@ button{
 
     <div class="card">
 
-        <h2>
-            💾 پشتیبان اطلاعات
-        </h2>
+        <h2>💾 پشتیبان اطلاعات</h2>
 
         <p class="backup-note">
+
             برای انتقال اطلاعات بیماران به کامپیوتر،
             ابتدا از اطلاعات خود فایل پشتیبان بگیرید.
+
         </p>
 
         <button
@@ -424,6 +642,8 @@ button{
         >
             دریافت فایل پشتیبان
         </button>
+
+        <br><br>
 
         <input
             type="file"
@@ -474,7 +694,9 @@ function loadPatients(){
         );
 
         return [];
+
     }
+
 }
 
 
@@ -534,6 +756,63 @@ const supplementaryNumberInput =
 const phoneInput =
     document.getElementById("phone");
 
+const reasonInput =
+    document.getElementById("reason");
+
+const diseaseInput =
+    document.getElementById("disease");
+
+const visitInput =
+    document.getElementById("visit");
+
+
+/* EYE */
+
+const rightEyeSPH =
+    document.getElementById("rightEyeSPH");
+
+const rightEyeCYL =
+    document.getElementById("rightEyeCYL");
+
+const rightEyeAXIS =
+    document.getElementById("rightEyeAXIS");
+
+const leftEyeSPH =
+    document.getElementById("leftEyeSPH");
+
+const leftEyeCYL =
+    document.getElementById("leftEyeCYL");
+
+const leftEyeAXIS =
+    document.getElementById("leftEyeAXIS");
+
+
+/* GLASSES */
+
+const rightGlassSPH =
+    document.getElementById("rightGlassSPH");
+
+const rightGlassCYL =
+    document.getElementById("rightGlassCYL");
+
+const rightGlassAXIS =
+    document.getElementById("rightGlassAXIS");
+
+const leftGlassSPH =
+    document.getElementById("leftGlassSPH");
+
+const leftGlassCYL =
+    document.getElementById("leftGlassCYL");
+
+const leftGlassAXIS =
+    document.getElementById("leftGlassAXIS");
+
+
+/* NOTE */
+
+const noteInput =
+    document.getElementById("note");
+
 const saveButton =
     document.getElementById("saveButton");
 
@@ -555,811 +834,147 @@ const exportButton =
 const importFile =
     document.getElementById("importFile");
 
-
-/* ================= LOGIN ================= */
-
-function login(){
-
-    const username =
-        usernameInput.value.trim();
-
-    const password =
-        passwordInput.value;
-
-    loginMessage.textContent = "";
-    loginMessage.className =
-        "message";
+const formTitle =
+    document.getElementById("formTitle");
 
 
-    if(
-        username === "drsadeghian" &&
-        password === "586768"
-    ){
+/* ================= CANVAS ================= */
 
-        loginPage.style.display =
-            "none";
+const canvas =
+    document.getElementById("pad");
 
-        mainPage.style.display =
-            "block";
+const ctx =
+    canvas.getContext("2d");
 
-        loginMessage.textContent =
-            "";
+let drawing = false;
 
-        showPatients();
+
+function getCanvasPosition(event){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    let clientX;
+    let clientY;
+
+    if(event.touches && event.touches.length){
+
+        clientX =
+            event.touches[0].clientX;
+
+        clientY =
+            event.touches[0].clientY;
 
     }else{
 
-        loginMessage.textContent =
-            "نام کاربری یا رمز عبور اشتباه است.";
+        clientX =
+            event.clientX;
 
-        loginMessage.className =
-            "message error";
-
-    }
-}
-
-
-/* LOGIN BUTTON */
-
-loginButton.addEventListener(
-    "click",
-    login
-);
-
-
-/* ENTER KEY */
-
-passwordInput.addEventListener(
-    "keydown",
-    function(event){
-
-        if(event.key === "Enter"){
-
-            event.preventDefault();
-
-            login();
-
-        }
+        clientY =
+            event.clientY;
 
     }
-);
 
 
-/* ================= LOGOUT ================= */
+    return {
 
-function logout(){
+        x:
+            (clientX - rect.left)
+            *
+            (canvas.width / rect.width),
 
-    mainPage.style.display =
-        "none";
-
-    loginPage.style.display =
-        "flex";
-
-    usernameInput.value =
-        "";
-
-    passwordInput.value =
-        "";
-
-    loginMessage.textContent =
-        "";
-
-    loginMessage.className =
-        "message";
-
-}
-
-
-logoutButton.addEventListener(
-    "click",
-    logout
-);
-
-
-/* ================= SAVE STORAGE ================= */
-
-function saveToStorage(){
-
-    try{
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(patients)
-        );
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "Save error:",
-            error
-        );
-
-        alert(
-            "ذخیره اطلاعات انجام نشد."
-        );
-
-        return false;
-    }
-}
-
-
-/* ================= SAVE PATIENT ================= */
-
-function savePatient(){
-
-    const name =
-        nameInput.value.trim();
-
-    if(!name){
-
-        formMessage.textContent =
-            "لطفاً نام و نام خانوادگی را وارد کنید.";
-
-        formMessage.className =
-            "message error";
-
-        nameInput.focus();
-
-        return;
-    }
-
-
-    const patientData = {
-
-        name:
-            name,
-
-        nationalCode:
-            nationalCodeInput.value.trim(),
-
-        fatherName:
-            fatherNameInput.value.trim(),
-
-        address:
-            addressInput.value.trim(),
-
-        mainInsurance:
-            mainInsuranceInput.value,
-
-        supplementaryInsurance:
-            supplementaryInsuranceInput.value.trim(),
-
-        supplementaryNumber:
-            supplementaryNumberInput.value.trim(),
-
-        phone:
-            phoneInput.value.trim()
+        y:
+            (clientY - rect.top)
+            *
+            (canvas.height / rect.height)
 
     };
 
-
-    if(editingId !== null){
-
-        const index =
-            patients.findIndex(
-                patient =>
-                    patient.id === editingId
-            );
-
-
-        if(index !== -1){
-
-            patients[index] = {
-
-                ...patients[index],
-
-                ...patientData
-
-            };
-
-            formMessage.textContent =
-                "اطلاعات بیمار ویرایش شد.";
-
-        }
-
-        editingId = null;
-
-
-    }else{
-
-        const newPatient = {
-
-            id:
-                Date.now(),
-
-            ...patientData
-
-        };
-
-
-        patients.push(
-            newPatient
-        );
-
-
-        formMessage.textContent =
-            "بیمار با موفقیت ثبت شد.";
-
-    }
-
-
-    formMessage.className =
-        "message success";
-
-
-    if(saveToStorage()){
-
-        clearForm(false);
-
-        showPatients();
-
-    }
-
 }
 
 
-/* SAVE BUTTON */
+function startDrawing(event){
 
-saveButton.addEventListener(
-    "click",
-    savePatient
-);
+    event.preventDefault();
 
+    drawing = true;
 
-/* ================= CLEAR FORM ================= */
+    const pos =
+        getCanvasPosition(event);
 
-function clearForm(showMessage = true){
+    ctx.beginPath();
 
-    nameInput.value =
-        "";
-
-    nationalCodeInput.value =
-        "";
-
-    fatherNameInput.value =
-        "";
-
-    addressInput.value =
-        "";
-
-    mainInsuranceInput.value =
-        "";
-
-    supplementaryInsuranceInput.value =
-        "";
-
-    supplementaryNumberInput.value =
-        "";
-
-    phoneInput.value =
-        "";
-
-    editingId =
-        null;
-
-
-    if(showMessage){
-
-        formMessage.textContent =
-            "فرم پاک شد.";
-
-        formMessage.className =
-            "message success";
-
-    }
-
-}
-
-
-/* CLEAR BUTTON */
-
-clearButton.addEventListener(
-    "click",
-    function(){
-
-        clearForm(true);
-
-    }
-);
-
-
-/* ================= SEARCH ================= */
-
-searchInput.addEventListener(
-    "input",
-    showPatients
-);
-
-
-/* ================= SHOW PATIENTS ================= */
-
-function showPatients(){
-
-    const search =
-        searchInput.value
-            .trim()
-            .toLowerCase();
-
-
-    const filtered =
-        patients.filter(
-            patient => {
-
-                const name =
-                    String(
-                        patient.name || ""
-                    ).toLowerCase();
-
-                const nationalCode =
-                    String(
-                        patient.nationalCode || ""
-                    ).toLowerCase();
-
-                const phone =
-                    String(
-                        patient.phone || ""
-                    ).toLowerCase();
-
-
-                return (
-
-                    name.includes(search)
-
-                    ||
-
-                    nationalCode.includes(search)
-
-                    ||
-
-                    phone.includes(search)
-
-                );
-
-            }
-        );
-
-
-    if(filtered.length === 0){
-
-        patientsList.innerHTML =
-            '<div class="empty">هنوز بیماری ثبت نشده است.</div>';
-
-        return;
-    }
-
-
-    patientsList.innerHTML =
-        filtered
-            .map(
-                patient => `
-
-                <div class="patient">
-
-                    <h3>
-                        👤
-                        ${escapeHTML(
-                            patient.name || "-"
-                        )}
-                    </h3>
-
-                    <p>
-                        <b>کد ملی:</b>
-                        ${escapeHTML(
-                            patient.nationalCode || "-"
-                        )}
-                    </p>
-
-                    <p>
-                        <b>نام پدر:</b>
-                        ${escapeHTML(
-                            patient.fatherName || "-"
-                        )}
-                    </p>
-
-                    <p>
-                        <b>شماره تماس:</b>
-                        ${escapeHTML(
-                            patient.phone || "-"
-                        )}
-                    </p>
-
-                    <p>
-                        <b>بیمه اصلی:</b>
-                        ${escapeHTML(
-                            patient.mainInsurance || "-"
-                        )}
-                    </p>
-
-                    <p>
-                        <b>بیمه تکمیلی:</b>
-                        ${escapeHTML(
-                            patient.supplementaryInsurance || "-"
-                        )}
-                    </p>
-
-                    <div class="actions">
-
-                        <button
-                            type="button"
-                            class="primary"
-                            onclick="editPatient(${patient.id})"
-                        >
-                            ویرایش
-                        </button>
-
-                        <button
-                            type="button"
-                            class="danger"
-                            onclick="deletePatient(${patient.id})"
-                        >
-                            حذف
-                        </button>
-
-                    </div>
-
-                </div>
-
-                `
-            )
-            .join("");
-
-}
-
-
-/* ================= EDIT ================= */
-
-function editPatient(id){
-
-    const patient =
-        patients.find(
-            item => item.id === id
-        );
-
-
-    if(!patient){
-        return;
-    }
-
-
-    nameInput.value =
-        patient.name || "";
-
-    nationalCodeInput.value =
-        patient.nationalCode || "";
-
-    fatherNameInput.value =
-        patient.fatherName || "";
-
-    addressInput.value =
-        patient.address || "";
-
-    mainInsuranceInput.value =
-        patient.mainInsurance || "";
-
-    supplementaryInsuranceInput.value =
-        patient.supplementaryInsurance || "";
-
-    supplementaryNumberInput.value =
-        patient.supplementaryNumber || "";
-
-    phoneInput.value =
-        patient.phone || "";
-
-
-    editingId =
-        id;
-
-
-    formMessage.textContent =
-        "در حال ویرایش اطلاعات بیمار هستید.";
-
-    formMessage.className =
-        "message";
-
-
-    window.scrollTo({
-
-        top:0,
-
-        behavior:"smooth"
-
-    });
-
-}
-
-
-/* ================= DELETE ================= */
-
-function deletePatient(id){
-
-    const patient =
-        patients.find(
-            item => item.id === id
-        );
-
-
-    if(!patient){
-        return;
-    }
-
-
-    const confirmed =
-        confirm(
-            "آیا از حذف این بیمار مطمئن هستید؟"
-        );
-
-
-    if(!confirmed){
-        return;
-    }
-
-
-    patients =
-        patients.filter(
-            item => item.id !== id
-        );
-
-
-    saveToStorage();
-
-    showPatients();
-
-}
-
-
-/* ================= EXPORT ================= */
-
-function exportData(){
-
-    if(patients.length === 0){
-
-        alert(
-            "هنوز اطلاعاتی برای پشتیبان‌گیری وجود ندارد."
-        );
-
-        return;
-    }
-
-
-    const data =
-        JSON.stringify(
-            patients,
-            null,
-            2
-        );
-
-
-    const blob =
-        new Blob(
-            [data],
-            {
-                type:
-                    "application/json"
-            }
-        );
-
-
-    const url =
-        URL.createObjectURL(blob);
-
-
-    const link =
-        document.createElement("a");
-
-
-    const date =
-        new Date()
-            .toISOString()
-            .slice(0,10);
-
-
-    link.href =
-        url;
-
-
-    link.download =
-        "Medicall-Backup-" +
-        date +
-        ".json";
-
-
-    document.body.appendChild(
-        link
-    );
-
-
-    link.click();
-
-
-    document.body.removeChild(
-        link
-    );
-
-
-    URL.revokeObjectURL(
-        url
+    ctx.moveTo(
+        pos.x,
+        pos.y
     );
 
 }
 
 
-/* EXPORT BUTTON */
+function draw(event){
 
-exportButton.addEventListener(
-    "click",
-    exportData
-);
-
-
-/* ================= IMPORT ================= */
-
-importFile.addEventListener(
-    "change",
-    importData
-);
-
-
-function importData(event){
-
-    const file =
-        event.target.files[0];
-
-
-    if(!file){
+    if(!drawing){
         return;
     }
 
+    event.preventDefault();
 
-    const reader =
-        new FileReader();
+    const pos =
+        getCanvasPosition(event);
 
+    ctx.lineWidth = 3;
 
-    reader.onload =
-        function(){
+    ctx.lineCap =
+        "round";
 
-            try{
+    ctx.lineJoin =
+        "round";
 
-                const imported =
-                    JSON.parse(
-                        reader.result
-                    );
+    ctx.strokeStyle =
+        "#183b56";
 
-
-                if(
-                    !Array.isArray(
-                        imported
-                    )
-                ){
-
-                    alert(
-                        "فایل پشتیبان معتبر نیست."
-                    );
-
-                    return;
-                }
-
-
-                let added =
-                    0;
-
-
-                imported.forEach(
-                    item => {
-
-                        if(
-                            !item ||
-                            !item.id
-                        ){
-
-                            return;
-                        }
-
-
-                        const exists =
-                            patients.some(
-                                patient =>
-                                    patient.id === item.id
-                            );
-
-
-                        if(!exists){
-
-                            patients.push(
-                                item
-                            );
-
-                            added++;
-
-                        }
-
-                    }
-                );
-
-
-                saveToStorage();
-
-                showPatients();
-
-
-                alert(
-                    added +
-                    " بیمار با موفقیت وارد شد."
-                );
-
-
-            }catch(error){
-
-                console.error(
-                    "Import error:",
-                    error
-                );
-
-
-                alert(
-                    "خواندن فایل پشتیبان با مشکل مواجه شد."
-                );
-
-            }
-
-
-            importFile.value =
-                "";
-
-        };
-
-
-    reader.readAsText(
-        file
+    ctx.lineTo(
+        pos.x,
+        pos.y
     );
 
-}
-
-
-/* ================= ESCAPE HTML ================= */
-
-function escapeHTML(value){
-
-    return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    ctx.stroke();
 
 }
 
 
-/* ================= START ================= */
+function stopDrawing(){
 
-showPatients();
+    drawing = false;
 
-</script>
-<input
-  type="text"
-  id="search"
-  placeholder="جستجو با نام یا کد ملی"
-  onkeyup="searchPatient()">
-</body>
-</html>
+    ctx.beginPath();
+
+}
+
+
+canvas.addEventListener(
+    "mousedown",
+    startDrawing
+);
+
+canvas.addEventListener(
+    "mousemove",
+    draw
+);
+
+canvas.addEventListener(
+    "mouseup",
+    stopDrawing
+);
+
+canvas.addEventListener(
+    "mouseleave",
+    stopDrawing
+);
+
+
+canvas.addEventListener(
+    "touchstart",
+    startDrawing,
+    {
