@@ -1,216 +1,232 @@
-
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Medicall</title>
-<style>
-body{font-family:tahoma;background:#eef2f7;margin:0;padding:20px}.box{max-width:700px;margin:auto;background:#fff;padding:20px;border-radius:16px}input,button{width:100%;padding:12px;margin:6px 0}button{background:#2563eb;color:#fff;border:none}.card{border:1px solid #ddd;border-radius:10px;padding:10px;margin-top:10px}
-</style>
-</head>
-<body>
-<div class="box" id="login">
-<h2>ورود به Medicall</h2>
-<input id="user" placeholder="نام کاربری">
-<input id="pass" type="password" placeholder="رمز عبور">
-<button onclick="login()">ورود</button>
-<p id="msg" style="color:red"></p>
-</div>
-
-<div class="box" id="app" style="display:none">
-<h2>پرونده پزشکی</h2>
-<button onclick="logout()">خروج</button>
-<input id="name" placeholder="نام و نام خانوادگی">
-<input id="code" placeholder="کد ملی">
-<input id="father" placeholder="نام پدر">
-<input id="insurance" placeholder="بیمه اصلی">
-<input id="extra" placeholder="بیمه تکمیلی">
-<input id="phone" placeholder="شماره تماس">
-<button onclick="save()">ثبت بیمار</button>
-<input id="search" placeholder="جستجو..." oninput="show()">
-<div id="list"></div>
-</div>
-
-<script>
-const USER='admin',PASS='1234';
-let db=JSON.parse(localStorage.getItem('patients')||'[]');
-function login(){if(user.value===USER&&pass.value===PASS){localStorage.setItem('login','1');login.style.display='none';app.style.display='block';show()}else msg.innerText='نام کاربری یا رمز اشتباه است';}
-function logout(){localStorage.removeItem('login');location.reload()}
-function save(){db.push({n:name.value,c:code.value,f:father.value,i:insurance.value,e:extra.value,p:phone.value});localStorage.setItem('patients',JSON.stringify(db));name.value=code.value=father.value=insurance.value=extra.value=phone.value='';show()}
-function show(){let s=search.value||'';list.innerHTML='';db.filter(x=>x.n.includes(s)||x.c.includes(s)).forEach((x,i)=>{list.innerHTML+=`<div class=card><b>${x.n}</b><br>کدملی:${x.c}<br>پدر:${x.f}<br>بیمه:${x.i}<br>تکمیلی:${x.e}<br>تلفن:${x.p}<br><button onclick='del(${i})'>حذف</button></div>`})}
-function del(i){db.splice(i,1);localStorage.setItem('patients',JSON.stringify(db));show()}
-if(localStorage.getItem('login')){login.style.display='none';app.style.display='block';show()}
-</script>
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>پرونده پزشکی</title>
+<title>Medicall</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f7fb;
-        margin: 0;
-        padding: 20px;
-    }
-
-    .container {
-        max-width: 700px;
-        margin: auto;
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 25px;
-    }
-
-    label {
-        display: block;
-        margin-top: 12px;
-        font-weight: bold;
-    }
-
-    input, textarea, select {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 12px;
-        margin-top: 6px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 15px;
-    }
-
-    textarea {
-        min-height: 80px;
-        resize: vertical;
-    }
-
-    button {
-        width: 100%;
-        padding: 13px;
-        margin-top: 18px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        background: #2563eb;
-        color: white;
-    }
-
-    button:hover {
-        opacity: 0.9;
-    }
-
-    .search-box {
-        margin-top: 30px;
-        border-top: 1px solid #ddd;
-        padding-top: 20px;
-    }
-
-    .patient {
-        background: #f8fafc;
-        border: 1px solid #ddd;
-        padding: 15px;
-        margin-top: 15px;
-        border-radius: 10px;
-    }
-
-    .delete {
-        background: #dc2626;
-    }
-
-    .empty {
-        text-align: center;
-        color: #777;
-        margin-top: 20px;
-    }
+body{
+    font-family:Tahoma,Arial,sans-serif;
+    background:#eef3f8;
+    margin:0;
+    padding:20px;
+}
+.box{
+    max-width:700px;
+    margin:30px auto;
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,.1);
+}
+h1,h2{text-align:center}
+input,textarea,button{
+    width:100%;
+    box-sizing:border-box;
+    padding:12px;
+    margin:7px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:15px;
+}
+textarea{min-height:80px}
+button{
+    background:#2563eb;
+    color:white;
+    border:0;
+    cursor:pointer;
+}
+.logout{background:#dc2626}
+.patient{
+    background:#f8fafc;
+    border:1px solid #ddd;
+    padding:15px;
+    margin-top:15px;
+    border-radius:10px;
+}
+.delete{background:#dc2626}
+.error{
+    color:red;
+    text-align:center;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- صفحه ورود -->
+<div class="box" id="loginPage">
 
-    <h1>🏥 پرونده پزشکی</h1>
+    <h1>🏥 Medicall</h1>
+    <h2>ورود</h2>
 
-    <label>نام و نام خانوادگی</label>
-    <input type="text" id="name">
+    <input
+        type="text"
+        id="username"
+        placeholder="نام کاربری">
 
-    <label>کد ملی</label>
-    <input type="text" id="nationalCode">
+    <input
+        type="password"
+        id="password"
+        placeholder="رمز عبور">
 
-    <label>شماره پرونده</label>
-    <input type="text" id="fileNumber">
+    <button onclick="login()">ورود</button>
 
-    <label>نام پدر</label>
-    <input type="text" id="fatherName">
-
-    <label>آدرس</label>
-    <textarea id="address"></textarea>
-
-    <label>نوع بیمه اصلی</label>
-    <input type="text" id="insurance">
-
-    <label>بیمه تکمیلی</label>
-    <input type="text" id="supplementaryInsurance">
-
-    <label>شماره بیمه تکمیلی</label>
-    <input type="text" id="supplementaryInsuranceNumber">
-
-    <label>شماره تماس</label>
-    <input type="text" id="phone">
-
-    <button onclick="savePatient()">💾 ثبت بیمار</button>
-
-    <div class="search-box">
-
-        <h2>🔎 جستجوی بیمار</h2>
-
-        <input
-            type="text"
-            id="search"
-            placeholder="نام، کد ملی یا شماره پرونده..."
-            oninput="searchPatients()"
-        >
-
-        <div id="patients"></div>
-
-    </div>
+    <p id="loginError" class="error"></p>
 
 </div>
 
+
+<!-- برنامه اصلی -->
+<div class="box" id="mainPage" style="display:none">
+
+    <h1>🏥 پرونده پزشکی</h1>
+
+    <button class="logout" onclick="logout()">
+        خروج
+    </button>
+
+    <h2>ثبت بیمار</h2>
+
+    <input id="name" placeholder="نام و نام خانوادگی">
+
+    <input id="nationalCode" placeholder="کد ملی">
+
+    <input id="fileNumber" placeholder="شماره پرونده">
+
+    <input id="fatherName" placeholder="نام پدر">
+
+    <textarea id="address" placeholder="آدرس"></textarea>
+
+    <input id="insurance" placeholder="نوع بیمه اصلی">
+
+    <input
+        id="supplementaryInsurance"
+        placeholder="بیمه تکمیلی">
+
+    <input
+        id="supplementaryInsuranceNumber"
+        placeholder="شماره بیمه تکمیلی">
+
+    <input id="phone" placeholder="شماره تماس">
+
+    <button onclick="savePatient()">
+        💾 ثبت بیمار
+    </button>
+
+
+    <h2>🔎 جستجوی بیمار</h2>
+
+    <input
+        id="search"
+        placeholder="نام، کد ملی یا شماره پرونده..."
+        oninput="searchPatients()">
+
+    <div id="patients"></div>
+
+</div>
+
+
 <script>
 
-let patients = JSON.parse(localStorage.getItem("medicalPatients")) || [];
+const USERNAME = "admin";
+const PASSWORD = "1234";
 
-function savePatient() {
+let patients =
+    JSON.parse(localStorage.getItem("medicalPatients")) || [];
+
+
+// ورود
+function login(){
+
+    const username =
+        document.getElementById("username").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    if(username === USERNAME && password === PASSWORD){
+
+        document.getElementById("loginPage").style.display =
+            "none";
+
+        document.getElementById("mainPage").style.display =
+            "block";
+
+        document.getElementById("loginError").innerText = "";
+
+        displayPatients(patients);
+
+    }else{
+
+        document.getElementById("loginError").innerText =
+            "نام کاربری یا رمز عبور اشتباه است.";
+
+    }
+}
+
+
+// خروج
+function logout(){
+
+    document.getElementById("mainPage").style.display =
+        "none";
+
+    document.getElementById("loginPage").style.display =
+        "block";
+
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+
+}
+
+
+// ثبت بیمار
+function savePatient(){
 
     const patient = {
-        name: document.getElementById("name").value.trim(),
-        nationalCode: document.getElementById("nationalCode").value.trim(),
-        fileNumber: document.getElementById("fileNumber").value.trim(),
-        fatherName: document.getElementById("fatherName").value.trim(),
-        address: document.getElementById("address").value.trim(),
-        insurance: document.getElementById("insurance").value.trim(),
+
+        name:
+            document.getElementById("name").value.trim(),
+
+        nationalCode:
+            document.getElementById("nationalCode").value.trim(),
+
+        fileNumber:
+            document.getElementById("fileNumber").value.trim(),
+
+        fatherName:
+            document.getElementById("fatherName").value.trim(),
+
+        address:
+            document.getElementById("address").value.trim(),
+
+        insurance:
+            document.getElementById("insurance").value.trim(),
+
         supplementaryInsurance:
-            document.getElementById("supplementaryInsurance").value.trim(),
+            document.getElementById(
+                "supplementaryInsurance"
+            ).value.trim(),
+
         supplementaryInsuranceNumber:
-            document.getElementById("supplementaryInsuranceNumber").value.trim(),
-        phone: document.getElementById("phone").value.trim()
+            document.getElementById(
+                "supplementaryInsuranceNumber"
+            ).value.trim(),
+
+        phone:
+            document.getElementById("phone").value.trim()
     };
 
-    if (!patient.name) {
+
+    if(!patient.name){
+
         alert("لطفاً نام بیمار را وارد کنید.");
         return;
+
     }
+
 
     patients.push(patient);
 
@@ -219,13 +235,17 @@ function savePatient() {
         JSON.stringify(patients)
     );
 
+
     alert("بیمار با موفقیت ثبت شد ✅");
 
     clearForm();
+
     displayPatients(patients);
 }
 
-function clearForm() {
+
+// پاک کردن فرم
+function clearForm(){
 
     document.getElementById("name").value = "";
     document.getElementById("nationalCode").value = "";
@@ -234,11 +254,16 @@ function clearForm() {
     document.getElementById("address").value = "";
     document.getElementById("insurance").value = "";
     document.getElementById("supplementaryInsurance").value = "";
-    document.getElementById("supplementaryInsuranceNumber").value = "";
+    document.getElementById(
+        "supplementaryInsuranceNumber"
+    ).value = "";
     document.getElementById("phone").value = "";
+
 }
 
-function searchPatients() {
+
+// جستجو
+function searchPatients(){
 
     const search =
         document.getElementById("search").value
@@ -246,96 +271,102 @@ function searchPatients() {
         .toLowerCase();
 
     const filtered = patients.filter(patient =>
+
         patient.name.toLowerCase().includes(search) ||
-        patient.nationalCode.toLowerCase().includes(search) ||
-        patient.fileNumber.toLowerCase().includes(search)
+
+        patient.nationalCode
+            .toLowerCase()
+            .includes(search) ||
+
+        patient.fileNumber
+            .toLowerCase()
+            .includes(search)
+
     );
 
     displayPatients(filtered);
+
 }
 
-function displayPatients(list) {
 
-    const container = document.getElementById("patients");
+// نمایش بیماران
+function displayPatients(list){
+
+    const container =
+        document.getElementById("patients");
 
     container.innerHTML = "";
 
-    if (list.length === 0) {
+
+    if(list.length === 0){
+
         container.innerHTML =
-            '<div class="empty">بیماری پیدا نشد.</div>';
+            "<p style='text-align:center'>بیماری پیدا نشد.</p>";
+
         return;
+
     }
 
-    list.forEach((patient, index) => {
 
-        const div = document.createElement("div");
+    list.forEach((patient) => {
+
+        const div =
+            document.createElement("div");
 
         div.className = "patient";
 
         div.innerHTML = `
+
             <strong>👤 ${escapeHTML(patient.name)}</strong>
 
-            <p>کد ملی: ${escapeHTML(patient.nationalCode)}</p>
+            <p>کد ملی:
+            ${escapeHTML(patient.nationalCode)}</p>
 
-            <p>شماره پرونده: ${escapeHTML(patient.fileNumber)}</p>
+            <p>شماره پرونده:
+            ${escapeHTML(patient.fileNumber)}</p>
 
-            <p>نام پدر: ${escapeHTML(patient.fatherName)}</p>
+            <p>نام پدر:
+            ${escapeHTML(patient.fatherName)}</p>
 
-            <p>آدرس: ${escapeHTML(patient.address)}</p>
+            <p>آدرس:
+            ${escapeHTML(patient.address)}</p>
 
-            <p>بیمه اصلی: ${escapeHTML(patient.insurance)}</p>
+            <p>بیمه اصلی:
+            ${escapeHTML(patient.insurance)}</p>
 
             <p>بیمه تکمیلی:
-                ${escapeHTML(patient.supplementaryInsurance)}
-            </p>
+            ${escapeHTML(patient.supplementaryInsurance)}</p>
 
             <p>شماره بیمه تکمیلی:
-                ${escapeHTML(patient.supplementaryInsuranceNumber)}
-            </p>
+            ${escapeHTML(
+                patient.supplementaryInsuranceNumber
+            )}</p>
 
-            <p>شماره تماس: ${escapeHTML(patient.phone)}</p>
+            <p>شماره تماس:
+            ${escapeHTML(patient.phone)}</p>
 
-            <button
-                class="delete"
-                onclick="deletePatient(${index})">
-                🗑️ حذف بیمار
-            </button>
         `;
 
         container.appendChild(div);
+
     });
+
 }
 
-function deletePatient(index) {
 
-    if (confirm("آیا از حذف این بیمار مطمئن هستید؟")) {
-
-        patients.splice(index, 1);
-
-        localStorage.setItem(
-            "medicalPatients",
-            JSON.stringify(patients)
-        );
-
-        displayPatients(patients);
-    }
-}
-
-function escapeHTML(text) {
+// جلوگیری از مشکل نمایش کدهای HTML
+function escapeHTML(text){
 
     return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
-displayPatients(patients);
+}
 
 </script>
 
 </body>
 </html>
-<button onclick="doLogin()">ورود</button>
-            
