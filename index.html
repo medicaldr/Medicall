@@ -95,9 +95,52 @@ button{
 <body>
 
 <div class="container">
-
 <!-- LOGIN -->
-<div id="loginPage" class="card">
+<div id="loginPage" class="login-page">
+
+    <div class="login-card">
+
+        <div class="medical-logo">
+            <div class="cross">✚</div>
+        </div>
+
+        <h1>MEDICALL</h1>
+        <p class="login-subtitle">سیستم مدیریت پرونده پزشکی</p>
+
+        <div class="input-group">
+            <label>نام کاربری</label>
+            <input
+                id="username"
+                type="text"
+                placeholder="نام کاربری"
+                autocomplete="username">
+        </div>
+
+        <div class="input-group">
+            <label>رمز عبور</label>
+            <input
+                id="password"
+                type="password"
+                placeholder="رمز عبور"
+                autocomplete="current-password">
+        </div>
+
+        <button
+            type="button"
+            class="login-button"
+            onclick="login()">
+            ورود به سیستم
+        </button>
+
+        <p id="loginError"></p>
+
+        <p class="login-footer">
+            Medical Records Management
+        </p>
+
+    </div>
+
+</div>
 
     <h1>🔐 ورود به سیستم</h1>
 
