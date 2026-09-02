@@ -3,102 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>پرونده پزشکی</title>
+<title>Medicall - پرونده پزشکی</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Tahoma,Arial,sans-serif;
+    background:#f3f6f9;
+    color:#222;
 }
 
-body {
-    margin: 0;
-    font-family: Tahoma, Arial, sans-serif;
-    background: #f3f6f9;
-    color: #222;
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
 }
 
-.container {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
+.card{
+    background:white;
+    padding:22px;
+    border-radius:15px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
-.card {
-    background: white;
-    padding: 22px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+h1,h2,h3{margin-top:0}
+
+input,textarea{
+    width:100%;
+    padding:12px;
+    margin:7px 0 12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
 }
 
-h1, h2, h3 {
-    margin-top: 0;
+textarea{
+    min-height:90px;
+    resize:vertical;
 }
 
-input, textarea, select {
-    width: 100%;
-    padding: 12px;
-    margin: 7px 0 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
+button{
+    border:0;
+    padding:11px 17px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    margin:4px;
+    background:#1976d2;
+    color:white;
 }
 
-textarea {
-    min-height: 90px;
-    resize: vertical;
+.success{background:#2e7d32}
+.danger{background:#d32f2f}
+.gray{background:#666}
+
+.hidden{
+    display:none !important;
 }
 
-button {
-    border: none;
-    padding: 11px 17px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 15px;
-    margin: 4px;
-    background: #1976d2;
-    color: white;
+.patient{
+    border:1px solid #ddd;
+    padding:15px;
+    border-radius:10px;
+    margin-top:10px;
+    background:#fafafa;
 }
 
-button:hover {
-    opacity: 0.9;
+.history{
+    border-right:5px solid #1976d2;
+    padding:15px;
+    margin:12px 0;
+    background:#f8fbff;
+    border-radius:8px;
 }
 
-.danger {
-    background: #d32f2f;
+.small{
+    color:#666;
+    font-size:13px;
 }
 
-.success {
-    background: #2e7d32;
-}
-
-.gray {
-    background: #666;
-}
-
-.patient {
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 10px;
-    background: #fafafa;
-}
-
-.history {
-    border-right: 5px solid #1976d2;
-    padding: 15px;
-    margin: 12px 0;
-    background: #f8fbff;
-    border-radius: 8px;
-}
-
-.hidden {
-    display: none;
-}
-
-.small {
-    color: #666;
-    font-size: 13px;
+.error{
+    color:#d32f2f;
+    font-weight:bold;
 }
 </style>
 </head>
@@ -109,17 +98,24 @@ button:hover {
 
 <!-- LOGIN -->
 <div id="loginPage" class="card">
+
     <h1>🔐 ورود به سیستم</h1>
 
     <label>نام کاربری</label>
-    <input id="username" type="text">
+    <input id="username" type="text" placeholder="نام کاربری">
 
     <label>رمز عبور</label>
-    <input id="password" type="password">
+    <input id="password" type="password" placeholder="رمز عبور">
 
-    <button onclick="login()">ورود</button>
+    <button type="button" onclick="login()">ورود</button>
 
-    <p id="loginError" style="color:red;"></p>
+    <p id="loginError"></p>
+
+    <p class="small">
+        نام کاربری آزمایشی: admin<br>
+        رمز عبور آزمایشی: 1234
+    </p>
+
 </div>
 
 
@@ -129,13 +125,17 @@ button:hover {
     <div class="card">
         <h1>🏥 سیستم پرونده پزشکی</h1>
 
-        <button onclick="showRegister()">➕ ثبت بیمار جدید</button>
+        <button type="button" onclick="showRegister()">
+            ➕ ثبت بیمار جدید
+        </button>
 
-        <button class="gray" onclick="logout()">خروج</button>
+        <button type="button" class="gray" onclick="logout()">
+            خروج
+        </button>
     </div>
 
 
-    <!-- REGISTER / EDIT PATIENT -->
+    <!-- PATIENT FORM -->
     <div id="patientForm" class="card hidden">
 
         <h2 id="formTitle">ثبت بیمار جدید</h2>
@@ -167,13 +167,21 @@ button:hover {
         <label>شماره تماس</label>
         <input id="phone">
 
-        <button id="savePatientButton" class="success" onclick="savePatient()">
+        <button
+            type="button"
+            id="savePatientButton"
+            class="success"
+            onclick="savePatient()">
             ثبت بیمار
         </button>
 
-        <button class="gray" onclick="cancelForm()">
+        <button
+            type="button"
+            class="gray"
+            onclick="cancelPatientForm()">
             انصراف
         </button>
+
     </div>
 
 
@@ -186,17 +194,20 @@ button:hover {
             id="search"
             type="text"
             placeholder="نام، کد ملی یا شماره پرونده..."
-            oninput="searchPatients()"
-        >
+            oninput="searchPatients()">
 
         <div id="patientList"></div>
+
     </div>
 
 
-    <!-- PATIENT PROFILE -->
+    <!-- PROFILE -->
     <div id="profilePage" class="card hidden">
 
-        <button class="gray" onclick="backToPatients()">
+        <button
+            type="button"
+            class="gray"
+            onclick="backToPatients()">
             ← بازگشت
         </button>
 
@@ -208,16 +219,22 @@ button:hover {
 
         <h2>🩺 سوابق پزشکی</h2>
 
-        <button onclick="showHistoryForm()" class="success">
+        <button
+            type="button"
+            class="success"
+            onclick="showHistoryForm()">
             ➕ افزودن سابقه پزشکی
         </button>
+
 
         <!-- HISTORY FORM -->
         <div id="historyForm" class="hidden">
 
             <div class="card">
 
-                <h3 id="historyTitle">ثبت سابقه جدید</h3>
+                <h3 id="historyTitle">
+                    ثبت سابقه جدید
+                </h3>
 
                 <label>تاریخ مراجعه</label>
                 <input id="historyDate" type="date">
@@ -234,11 +251,17 @@ button:hover {
                 <label>توضیحات پزشک</label>
                 <textarea id="historyNotes"></textarea>
 
-                <button class="success" onclick="saveHistory()">
+                <button
+                    type="button"
+                    class="success"
+                    onclick="saveHistory()">
                     ذخیره سابقه
                 </button>
 
-                <button class="gray" onclick="cancelHistory()">
+                <button
+                    type="button"
+                    class="gray"
+                    onclick="cancelHistory()">
                     انصراف
                 </button>
 
@@ -250,11 +273,16 @@ button:hover {
 
         <hr>
 
-        <button onclick="editCurrentPatient()">
+        <button
+            type="button"
+            onclick="editCurrentPatient()">
             ✏️ ویرایش اطلاعات بیمار
         </button>
 
-        <button class="danger" onclick="deleteCurrentPatient()">
+        <button
+            type="button"
+            class="danger"
+            onclick="deleteCurrentPatient()">
             🗑 حذف بیمار
         </button>
 
@@ -267,67 +295,139 @@ button:hover {
 
 <script>
 
-let patients = JSON.parse(localStorage.getItem("medicalPatients")) || [];
+let patients = [];
 
 let currentPatientIndex = null;
 let editingPatientIndex = null;
 let editingHistoryIndex = null;
 
 
-// LOGIN
-function login() {
+// =========================
+// شروع برنامه
+// =========================
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+function loadPatients(){
 
-    if (username === "admin" && password === "1234") {
+    try{
 
-        document.getElementById("loginPage").classList.add("hidden");
-        document.getElementById("mainPage").classList.remove("hidden");
+        const saved =
+            localStorage.getItem("medicalPatients");
+
+        patients = saved ? JSON.parse(saved) : [];
+
+        if(!Array.isArray(patients)){
+            patients = [];
+        }
+
+    }catch(error){
+
+        patients = [];
+
+    }
+
+}
+
+
+// =========================
+// ورود
+// =========================
+
+function login(){
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const error =
+        document.getElementById("loginError");
+
+
+    if(username === "admin" && password === "1234"){
+
+        error.innerText = "";
+
+        document.getElementById("loginPage")
+            .classList.add("hidden");
+
+        document.getElementById("mainPage")
+            .classList.remove("hidden");
+
+        document.getElementById("searchBox")
+            .classList.remove("hidden");
+
+        document.getElementById("profilePage")
+            .classList.add("hidden");
+
+        document.getElementById("patientForm")
+            .classList.add("hidden");
 
         displayPatients();
 
-    } else {
+    }else{
 
-        document.getElementById("loginError").innerText =
-            "نام کاربری یا رمز عبور اشتباه است.";
+        error.className = "error";
+
+        error.innerText =
+            "❌ نام کاربری یا رمز عبور اشتباه است.";
 
     }
+
 }
 
 
-// LOGOUT
-function logout() {
+// =========================
+// خروج
+// =========================
 
-    document.getElementById("mainPage").classList.add("hidden");
-    document.getElementById("loginPage").classList.remove("hidden");
+function logout(){
+
+    document.getElementById("mainPage")
+        .classList.add("hidden");
+
+    document.getElementById("loginPage")
+        .classList.remove("hidden");
 
     document.getElementById("username").value = "";
     document.getElementById("password").value = "";
+
 }
 
 
-// SHOW REGISTER
-function showRegister() {
+// =========================
+// ثبت بیمار جدید
+// =========================
+
+function showRegister(){
 
     editingPatientIndex = null;
 
-    document.getElementById("patientForm").classList.remove("hidden");
-
-    document.getElementById("formTitle").innerText =
-        "ثبت بیمار جدید";
-
-    document.getElementById("savePatientButton").innerText =
-        "ثبت بیمار";
-
     clearPatientForm();
 
-    document.getElementById("profilePage").classList.add("hidden");
+    document.getElementById("formTitle")
+        .innerText = "ثبت بیمار جدید";
+
+    document.getElementById("savePatientButton")
+        .innerText = "ثبت بیمار";
+
+    document.getElementById("patientForm")
+        .classList.remove("hidden");
+
+    document.getElementById("searchBox")
+        .classList.add("hidden");
+
+    document.getElementById("profilePage")
+        .classList.add("hidden");
+
 }
 
 
-// CLEAR PATIENT FORM
-function clearPatientForm() {
+// =========================
+// پاک کردن فرم بیمار
+// =========================
+
+function clearPatientForm(){
 
     document.getElementById("name").value = "";
     document.getElementById("nationalCode").value = "";
@@ -338,33 +438,21 @@ function clearPatientForm() {
     document.getElementById("supplementaryInsurance").value = "";
     document.getElementById("supplementaryNumber").value = "";
     document.getElementById("phone").value = "";
+
 }
 
 
-// SAVE PATIENT
-function savePatient() {
+// =========================
+// ذخیره بیمار
+// =========================
 
-    const patient = {
+function savePatient(){
 
-        name: document.getElementById("name").value,
-        nationalCode: document.getElementById("nationalCode").value,
-        fileNumber: document.getElementById("fileNumber").value,
-        fatherName: document.getElementById("fatherName").value,
-        address: document.getElementById("address").value,
-        mainInsurance: document.getElementById("mainInsurance").value,
-        supplementaryInsurance: document.getElementById("supplementaryInsurance").value,
-        supplementaryNumber: document.getElementById("supplementaryNumber").value,
-        phone: document.getElementById("phone").value,
-
-        history:
-            editingPatientIndex !== null
-            ? (patients[editingPatientIndex].history || [])
-            : []
-
-    };
+    const name =
+        document.getElementById("name").value.trim();
 
 
-    if (!patient.name.trim()) {
+    if(!name){
 
         alert("لطفاً نام بیمار را وارد کنید.");
         return;
@@ -372,43 +460,103 @@ function savePatient() {
     }
 
 
-    if (editingPatientIndex !== null) {
+    const history =
+        editingPatientIndex !== null &&
+        patients[editingPatientIndex]
+            ? (patients[editingPatientIndex].history || [])
+            : [];
 
-        patients[editingPatientIndex] = patient;
 
-        alert("اطلاعات بیمار ویرایش شد.");
+    const patient = {
 
-    } else {
+        name:name,
+
+        nationalCode:
+            document.getElementById("nationalCode").value.trim(),
+
+        fileNumber:
+            document.getElementById("fileNumber").value.trim(),
+
+        fatherName:
+            document.getElementById("fatherName").value.trim(),
+
+        address:
+            document.getElementById("address").value.trim(),
+
+        mainInsurance:
+            document.getElementById("mainInsurance").value.trim(),
+
+        supplementaryInsurance:
+            document.getElementById("supplementaryInsurance").value.trim(),
+
+        supplementaryNumber:
+            document.getElementById("supplementaryNumber").value.trim(),
+
+        phone:
+            document.getElementById("phone").value.trim(),
+
+        history:history
+
+    };
+
+
+    if(editingPatientIndex === null){
 
         patients.push(patient);
 
-        alert("بیمار با موفقیت ثبت شد.");
+        alert("✅ بیمار با موفقیت ثبت شد.");
+
+    }else{
+
+        patients[editingPatientIndex] = patient;
+
+        alert("✅ اطلاعات بیمار ویرایش شد.");
 
     }
 
+
+    saveData();
+
+    editingPatientIndex = null;
+
+    document.getElementById("patientForm")
+        .classList.add("hidden");
+
+    document.getElementById("searchBox")
+        .classList.remove("hidden");
+
+    displayPatients();
+
+}
+
+
+// =========================
+// ذخیره در گوشی
+// =========================
+
+function saveData(){
 
     localStorage.setItem(
         "medicalPatients",
         JSON.stringify(patients)
     );
 
-
-    editingPatientIndex = null;
-
-    document.getElementById("patientForm").classList.add("hidden");
-
-    displayPatients();
 }
 
 
-// DISPLAY PATIENTS
-function displayPatients(list = patients) {
+// =========================
+// نمایش بیماران
+// =========================
 
-    const container = document.getElementById("patientList");
+function displayPatients(list = patients){
+
+    const container =
+        document.getElementById("patientList");
 
     container.innerHTML = "";
 
-    if (list.length === 0) {
+
+    if(list.length === 0){
 
         container.innerHTML =
             "<p>هنوز بیماری ثبت نشده است.</p>";
@@ -418,27 +566,33 @@ function displayPatients(list = patients) {
     }
 
 
-    list.forEach((patient, index) => {
+    list.forEach(patient => {
 
-        const realIndex = patients.indexOf(patient);
+        const index =
+            patients.indexOf(patient);
+
 
         container.innerHTML += `
 
         <div class="patient">
 
-            <h3>${escapeHTML(patient.name)}</h3>
+            <h3>
+                👤 ${escapeHTML(patient.name)}
+            </h3>
 
             <p>
-            کد ملی:
-            ${escapeHTML(patient.nationalCode || "-")}
+                کد ملی:
+                ${escapeHTML(patient.nationalCode || "-")}
             </p>
 
             <p>
-            شماره پرونده:
-            ${escapeHTML(patient.fileNumber || "-")}
+                شماره پرونده:
+                ${escapeHTML(patient.fileNumber || "-")}
             </p>
 
-            <button onclick="openProfile(${realIndex})">
+            <button
+                type="button"
+                onclick="openProfile(${index})">
                 مشاهده پرونده
             </button>
 
@@ -451,16 +605,20 @@ function displayPatients(list = patients) {
 }
 
 
-// SEARCH
-function searchPatients() {
+// =========================
+// جستجو
+// =========================
+
+function searchPatients(){
 
     const text =
-        document.getElementById("search").value
-        .trim()
-        .toLowerCase();
+        document.getElementById("search")
+            .value
+            .trim()
+            .toLowerCase();
 
 
-    if (!text) {
+    if(!text){
 
         displayPatients();
         return;
@@ -468,31 +626,44 @@ function searchPatients() {
     }
 
 
-    const results = patients.filter(patient =>
+    const results =
+        patients.filter(patient =>
 
-        (patient.name || "").toLowerCase().includes(text) ||
+            (patient.name || "")
+                .toLowerCase()
+                .includes(text)
 
-        (patient.nationalCode || "")
-            .toLowerCase()
-            .includes(text) ||
+            ||
 
-        (patient.fileNumber || "")
-            .toLowerCase()
-            .includes(text)
+            (patient.nationalCode || "")
+                .toLowerCase()
+                .includes(text)
 
-    );
+            ||
+
+            (patient.fileNumber || "")
+                .toLowerCase()
+                .includes(text)
+
+        );
 
 
     displayPatients(results);
+
 }
 
 
-// OPEN PROFILE
-function openProfile(index) {
+// =========================
+// باز کردن پرونده
+// =========================
+
+function openProfile(index){
 
     currentPatientIndex = index;
 
-    const patient = patients[index];
+    const patient =
+        patients[index];
+
 
     document.getElementById("searchBox")
         .classList.add("hidden");
@@ -504,48 +675,112 @@ function openProfile(index) {
         .classList.remove("hidden");
 
 
-    document.getElementById("profileInfo").innerHTML = `
+    document.getElementById("profileInfo")
+        .innerHTML = `
 
-        <p><strong>نام و نام خانوادگی:</strong>
-        ${escapeHTML(patient.name)}</p>
+        <p>
+            <strong>نام و نام خانوادگی:</strong>
+            ${escapeHTML(patient.name)}
+        </p>
 
-        <p><strong>کد ملی:</strong>
-        ${escapeHTML(patient.nationalCode || "-")}</p>
+        <p>
+            <strong>کد ملی:</strong>
+            ${escapeHTML(patient.nationalCode || "-")}
+        </p>
 
-        <p><strong>شماره پرونده:</strong>
-        ${escapeHTML(patient.fileNumber || "-")}</p>
+        <p>
+            <strong>شماره پرونده:</strong>
+            ${escapeHTML(patient.fileNumber || "-")}
+        </p>
 
-        <p><strong>نام پدر:</strong>
-        ${escapeHTML(patient.fatherName || "-")}</p>
+        <p>
+            <strong>نام پدر:</strong>
+            ${escapeHTML(patient.fatherName || "-")}
+        </p>
 
-        <p><strong>آدرس:</strong>
-        ${escapeHTML(patient.address || "-")}</p>
+        <p>
+            <strong>آدرس:</strong>
+            ${escapeHTML(patient.address || "-")}
+        </p>
 
-        <p><strong>بیمه اصلی:</strong>
-        ${escapeHTML(patient.mainInsurance || "-")}</p>
+        <p>
+            <strong>بیمه اصلی:</strong>
+            ${escapeHTML(patient.mainInsurance || "-")}
+        </p>
 
-        <p><strong>بیمه تکمیلی:</strong>
-        ${escapeHTML(patient.supplementaryInsurance || "-")}</p>
+        <p>
+            <strong>بیمه تکمیلی:</strong>
+            ${escapeHTML(patient.supplementaryInsurance || "-")}
+        </p>
 
-        <p><strong>شماره بیمه تکمیلی:</strong>
-        ${escapeHTML(patient.supplementaryNumber || "-")}</p>
+        <p>
+            <strong>شماره بیمه تکمیلی:</strong>
+            ${escapeHTML(patient.supplementaryNumber || "-")}
+        </p>
 
-        <p><strong>شماره تماس:</strong>
-        ${escapeHTML(patient.phone || "-")}</p>
+        <p>
+            <strong>شماره تماس:</strong>
+            ${escapeHTML(patient.phone || "-")}
+        </p>
 
-    `;
+        `;
 
 
     displayHistory();
+
 }
 
 
-// EDIT PATIENT
-function editCurrentPatient() {
+// =========================
+// ویرایش بیمار
+// =========================
 
-    const patient = patients[currentPatientIndex];
+function editCurrentPatient(){
 
-    editingPatientIndex = currentPatientIndex;
+    if(currentPatientIndex === null) return;
+
+
+    const patient =
+        patients[currentPatientIndex];
+
+
+    editingPatientIndex =
+        currentPatientIndex;
+
+
+    document.getElementById("formTitle")
+        .innerText = "ویرایش اطلاعات بیمار";
+
+    document.getElementById("savePatientButton")
+        .innerText = "ذخیره تغییرات";
+
+
+    document.getElementById("name").value =
+        patient.name || "";
+
+    document.getElementById("nationalCode").value =
+        patient.nationalCode || "";
+
+    document.getElementById("fileNumber").value =
+        patient.fileNumber || "";
+
+    document.getElementById("fatherName").value =
+        patient.fatherName || "";
+
+    document.getElementById("address").value =
+        patient.address || "";
+
+    document.getElementById("mainInsurance").value =
+        patient.mainInsurance || "";
+
+    document.getElementById("supplementaryInsurance").value =
+        patient.supplementaryInsurance || "";
+
+    document.getElementById("supplementaryNumber").value =
+        patient.supplementaryNumber || "";
+
+    document.getElementById("phone").value =
+        patient.phone || "";
 
 
     document.getElementById("profilePage")
@@ -554,9 +789,353 @@ function editCurrentPatient() {
     document.getElementById("patientForm")
         .classList.remove("hidden");
 
+}
 
-    document.getElementById("formTitle").innerText =
-        "ویرایش اطلاعات بیمار";
 
-    document.getElementById("savePatientButton").innerText
-            
+// =========================
+// حذف بیمار
+// =========================
+
+function deleteCurrentPatient(){
+
+    if(currentPatientIndex === null) return;
+
+
+    if(!confirm("آیا از حذف این بیمار مطمئن هستید؟")){
+        return;
+    }
+
+
+    patients.splice(currentPatientIndex,1);
+
+    saveData();
+
+    currentPatientIndex = null;
+
+    backToPatients();
+
+}
+
+
+// =========================
+// بازگشت
+// =========================
+
+function backToPatients(){
+
+    document.getElementById("profilePage")
+        .classList.add("hidden");
+
+    document.getElementById("patientForm")
+        .classList.add("hidden");
+
+    document.getElementById("searchBox")
+        .classList.remove("hidden");
+
+    displayPatients();
+
+}
+
+
+// =========================
+// انصراف فرم بیمار
+// =========================
+
+function cancelPatientForm(){
+
+    editingPatientIndex = null;
+
+    document.getElementById("patientForm")
+        .classList.add("hidden");
+
+    document.getElementById("searchBox")
+        .classList.remove("hidden");
+
+}
+
+
+// =========================
+// افزودن سابقه
+// =========================
+
+function showHistoryForm(){
+
+    editingHistoryIndex = null;
+
+    clearHistoryForm();
+
+    document.getElementById("historyTitle")
+        .innerText = "ثبت سابقه جدید";
+
+    document.getElementById("historyForm")
+        .classList.remove("hidden");
+
+}
+
+
+// =========================
+// پاک کردن فرم سابقه
+// =========================
+
+function clearHistoryForm(){
+
+    document.getElementById("historyDate").value = "";
+    document.getElementById("historyReason").value = "";
+    document.getElementById("historyDiagnosis").value = "";
+    document.getElementById("historyMedicine").value = "";
+    document.getElementById("historyNotes").value = "";
+
+}
+
+
+// =========================
+// ذخیره سابقه
+// =========================
+
+function saveHistory(){
+
+    if(currentPatientIndex === null) return;
+
+
+    const patient =
+        patients[currentPatientIndex];
+
+
+    if(!patient.history){
+        patient.history = [];
+    }
+
+
+    const history = {
+
+        date:
+            document.getElementById("historyDate").value,
+
+        reason:
+            document.getElementById("historyReason").value.trim(),
+
+        diagnosis:
+            document.getElementById("historyDiagnosis").value.trim(),
+
+        medicine:
+            document.getElementById("historyMedicine").value.trim(),
+
+        notes:
+            document.getElementById("historyNotes").value.trim()
+
+    };
+
+
+    if(editingHistoryIndex === null){
+
+        patient.history.push(history);
+
+        alert("✅ سابقه پزشکی ثبت شد.");
+
+    }else{
+
+        patient.history[editingHistoryIndex] =
+            history;
+
+        alert("✅ سابقه پزشکی ویرایش شد.");
+
+    }
+
+
+    saveData();
+
+    cancelHistory();
+
+    displayHistory();
+
+}
+
+
+// =========================
+// نمایش سوابق
+// =========================
+
+function displayHistory(){
+
+    const patient =
+        patients[currentPatientIndex];
+
+    const container =
+        document.getElementById("historyList");
+
+    container.innerHTML = "";
+
+
+    if(!patient.history ||
+       patient.history.length === 0){
+
+        container.innerHTML =
+            "<p class='small'>هنوز سابقه پزشکی ثبت نشده است.</p>";
+
+        return;
+
+    }
+
+
+    patient.history.forEach((history,index) => {
+
+        container.innerHTML += `
+
+        <div class="history">
+
+            <h3>
+                🩺 مراجعه ${index + 1}
+            </h3>
+
+            <p>
+                <strong>📅 تاریخ:</strong>
+                ${escapeHTML(history.date || "-")}
+            </p>
+
+            <p>
+                <strong>🔹 علت مراجعه:</strong><br>
+                ${escapeHTML(history.reason || "-")}
+            </p>
+
+            <p>
+                <strong>🔹 تشخیص:</strong><br>
+                ${escapeHTML(history.diagnosis || "-")}
+            </p>
+
+            <p>
+                <strong>💊 داروها / درمان:</strong><br>
+                ${escapeHTML(history.medicine || "-")}
+            </p>
+
+            <p>
+                <strong>📝 توضیحات پزشک:</strong><br>
+                ${escapeHTML(history.notes || "-")}
+            </p>
+
+            <button
+                type="button"
+                onclick="editHistory(${index})">
+                ✏️ ویرایش
+            </button>
+
+            <button
+                type="button"
+                class="danger"
+                onclick="deleteHistory(${index})">
+                🗑 حذف
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+// =========================
+// ویرایش سابقه
+// =========================
+
+function editHistory(index){
+
+    const history =
+        patients[currentPatientIndex]
+            .history[index];
+
+
+    editingHistoryIndex = index;
+
+
+    document.getElementById("historyTitle")
+        .innerText = "ویرایش سابقه پزشکی";
+
+
+    document.getElementById("historyDate").value =
+        history.date || "";
+
+    document.getElementById("historyReason").value =
+        history.reason || "";
+
+    document.getElementById("historyDiagnosis").value =
+        history.diagnosis || "";
+
+    document.getElementById("historyMedicine").value =
+        history.medicine || "";
+
+    document.getElementById("historyNotes").value =
+        history.notes || "";
+
+
+    document.getElementById("historyForm")
+        .classList.remove("hidden");
+
+}
+
+
+// =========================
+// حذف سابقه
+// =========================
+
+function deleteHistory(index){
+
+    if(!confirm("آیا از حذف این سابقه مطمئن هستید؟")){
+        return;
+    }
+
+
+    patients[currentPatientIndex]
+        .history
+        .splice(index,1);
+
+
+    saveData();
+
+    displayHistory();
+
+}
+
+
+// =========================
+// انصراف سابقه
+// =========================
+
+function cancelHistory(){
+
+    editingHistoryIndex = null;
+
+    clearHistoryForm();
+
+    document.getElementById("historyForm")
+        .classList.add("hidden");
+
+}
+
+
+// =========================
+// جلوگیری از کد HTML
+// =========================
+
+function escapeHTML(text){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+// =========================
+// شروع
+// =========================
+
+loadPatients();
+
+</script>
+
+</body>
+</html>
