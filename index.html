@@ -153,6 +153,11 @@ button{
     margin-top:0;
 }
 
+.patient p{
+    line-height:1.8;
+    margin:5px 0;
+}
+
 .actions{
     display:flex;
     gap:8px;
@@ -233,6 +238,23 @@ button{
     line-height:1.8;
 }
 
+.info-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+.info-table td{
+    border-bottom:1px solid #e4edf2;
+    padding:8px 4px;
+    vertical-align:top;
+}
+
+.info-table td:first-child{
+    font-weight:bold;
+    width:35%;
+}
+
 @media(max-width:600px){
 
     #mainPage{
@@ -245,6 +267,10 @@ button{
 
     .login-card{
         padding:24px;
+    }
+
+    .info-table td:first-child{
+        width:40%;
     }
 }
 </style>
@@ -371,7 +397,9 @@ button{
 
             <select id="mainInsurance">
 
-                <option value="">نوع بیمه اصلی</option>
+                <option value="">
+                    نوع بیمه اصلی
+                </option>
 
                 <option value="تأمین اجتماعی">
                     تأمین اجتماعی
@@ -614,7 +642,7 @@ button{
         <input
             id="search"
             type="search"
-            placeholder="نام، کد ملی یا شماره تماس..."
+            placeholder="نام، کد ملی، شماره تماس یا نام پدر..."
         >
 
         <div id="patientsList"></div>
@@ -688,10 +716,7 @@ function loadPatients(){
 
     }catch(error){
 
-        console.error(
-            "Storage error:",
-            error
-        );
+        console.error("Storage error:",error);
 
         return [];
 
@@ -744,14 +769,10 @@ const mainInsuranceInput =
     document.getElementById("mainInsurance");
 
 const supplementaryInsuranceInput =
-    document.getElementById(
-        "supplementaryInsurance"
-    );
+    document.getElementById("supplementaryInsurance");
 
 const supplementaryNumberInput =
-    document.getElementById(
-        "supplementaryNumber"
-    );
+    document.getElementById("supplementaryNumber");
 
 const phoneInput =
     document.getElementById("phone");
@@ -766,7 +787,7 @@ const visitInput =
     document.getElementById("visit");
 
 
-/* EYE */
+/* ================= EYE ================= */
 
 const rightEyeSPH =
     document.getElementById("rightEyeSPH");
@@ -787,7 +808,7 @@ const leftEyeAXIS =
     document.getElementById("leftEyeAXIS");
 
 
-/* GLASSES */
+/* ================= GLASSES ================= */
 
 const rightGlassSPH =
     document.getElementById("rightGlassSPH");
@@ -808,7 +829,7 @@ const leftGlassAXIS =
     document.getElementById("leftGlassAXIS");
 
 
-/* NOTE */
+/* ================= NOTE ================= */
 
 const noteInput =
     document.getElementById("note");
@@ -818,6 +839,9 @@ const saveButton =
 
 const clearButton =
     document.getElementById("clearButton");
+
+const clearPadButton =
+    document.getElementById("clearPadButton");
 
 const formMessage =
     document.getElementById("formMessage");
@@ -875,7 +899,6 @@ function getCanvasPosition(event){
 
     }
 
-
     return {
 
         x:
@@ -925,14 +948,11 @@ function draw(event){
 
     ctx.lineWidth = 3;
 
-    ctx.lineCap =
-        "round";
+    ctx.lineCap = "round";
 
-    ctx.lineJoin =
-        "round";
+    ctx.lineJoin = "round";
 
-    ctx.strokeStyle =
-        "#183b56";
+    ctx.strokeStyle = "#183b56";
 
     ctx.lineTo(
         pos.x,
@@ -952,6 +972,8 @@ function stopDrawing(){
 
 }
 
+
+/* Mouse */
 
 canvas.addEventListener(
     "mousedown",
@@ -974,7 +996,941 @@ canvas.addEventListener(
 );
 
 
+/* Touch */
+
 canvas.addEventListener(
     "touchstart",
     startDrawing,
-    {
+    {passive:false}
+);
+
+canvas.addEventListener(
+    "touchmove",
+    draw,
+    {passive:false}
+);
+
+canvas.addEventListener(
+    "touchend",
+    stopDrawing
+);
+
+
+/* ================= CLEAR CANVAS ================= */
+
+function clearCanvas(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+}
+
+
+clearPadButton.addEventListener(
+    "click",
+    clearCanvas
+);
+
+
+/* ================= LOGIN ================= */
+
+function login(){
+
+    const username =
+        usernameInput.value.trim();
+
+    const password =
+        passwordInput.value;
+
+    if(
+        username === "drsadeghian" &&
+        password === "586768"
+    ){
+
+        loginPage.style.display = "none";
+
+        mainPage.style.display = "block";
+
+        loginMessage.textContent = "";
+
+        showPatients();
+
+    }else{
+
+        loginMessage.textContent =
+            "نام کاربری یا رمز عبور اشتباه است.";
+
+        loginMessage.className =
+            "message error";
+
+    }
+
+}
+
+
+loginButton.addEventListener(
+    "click",
+    login
+);
+
+
+/* ENTER FOR LOGIN */
+
+usernameInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+            login();
+        }
+
+    }
+);
+
+
+passwordInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+            login();
+        }
+
+    }
+);
+
+
+/* ================= LOGOUT ================= */
+
+logoutButton.addEventListener(
+    "click",
+    function(){
+
+        mainPage.style.display = "none";
+
+        loginPage.style.display = "flex";
+
+        usernameInput.value = "";
+
+        passwordInput.value = "";
+
+        loginMessage.textContent = "";
+
+    }
+);
+
+
+/* ================= SAVE ================= */
+
+saveButton.addEventListener(
+    "click",
+    function(){
+
+        const patient = {
+
+            id:
+                editingId ||
+                Date.now().toString(),
+
+            name:
+                nameInput.value.trim(),
+
+            nationalCode:
+                nationalCodeInput.value.trim(),
+
+            fatherName:
+                fatherNameInput.value.trim(),
+
+            address:
+                addressInput.value.trim(),
+
+            mainInsurance:
+                mainInsuranceInput.value,
+
+            supplementaryInsurance:
+                supplementaryInsuranceInput.value.trim(),
+
+            supplementaryNumber:
+                supplementaryNumberInput.value.trim(),
+
+            phone:
+                phoneInput.value.trim(),
+
+            reason:
+                reasonInput.value.trim(),
+
+            disease:
+                diseaseInput.value.trim(),
+
+            visit:
+                visitInput.value,
+
+            rightEyeSPH:
+                rightEyeSPH.value.trim(),
+
+            rightEyeCYL:
+                rightEyeCYL.value.trim(),
+
+            rightEyeAXIS:
+                rightEyeAXIS.value.trim(),
+
+            leftEyeSPH:
+                leftEyeSPH.value.trim(),
+
+            leftEyeCYL:
+                leftEyeCYL.value.trim(),
+
+            leftEyeAXIS:
+                leftEyeAXIS.value.trim(),
+
+            rightGlassSPH:
+                rightGlassSPH.value.trim(),
+
+            rightGlassCYL:
+                rightGlassCYL.value.trim(),
+
+            rightGlassAXIS:
+                rightGlassAXIS.value.trim(),
+
+            leftGlassSPH:
+                leftGlassSPH.value.trim(),
+
+            leftGlassCYL:
+                leftGlassCYL.value.trim(),
+
+            leftGlassAXIS:
+                leftGlassAXIS.value.trim(),
+
+            note:
+                noteInput.value.trim(),
+
+            handwriting:
+                canvas.toDataURL("image/png")
+
+        };
+
+
+        if(!patient.name){
+
+            formMessage.textContent =
+                "لطفاً نام و نام خانوادگی بیمار را وارد کنید.";
+
+            formMessage.className =
+                "message error";
+
+            return;
+
+        }
+
+
+        if(editingId){
+
+            const index =
+                patients.findIndex(
+                    p => p.id === editingId
+                );
+
+            if(index !== -1){
+
+                patients[index] =
+                    patient;
+
+            }
+
+            formMessage.textContent =
+                "اطلاعات بیمار با موفقیت ویرایش شد.";
+
+        }else{
+
+            patients.push(patient);
+
+            formMessage.textContent =
+                "بیمار با موفقیت ذخیره شد.";
+
+        }
+
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(patients)
+        );
+
+
+        formMessage.className =
+            "message success";
+
+
+        clearForm();
+
+        showPatients();
+
+    }
+);
+
+
+/* ================= CLEAR FORM ================= */
+
+function clearForm(){
+
+    editingId = null;
+
+    formTitle.textContent =
+        "➕ ثبت بیمار جدید";
+
+    saveButton.textContent =
+        "ذخیره بیمار";
+
+
+    nameInput.value = "";
+
+    nationalCodeInput.value = "";
+
+    fatherNameInput.value = "";
+
+    addressInput.value = "";
+
+    mainInsuranceInput.value = "";
+
+    supplementaryInsuranceInput.value = "";
+
+    supplementaryNumberInput.value = "";
+
+    phoneInput.value = "";
+
+    reasonInput.value = "";
+
+    diseaseInput.value = "";
+
+    visitInput.value = "";
+
+
+    rightEyeSPH.value = "";
+
+    rightEyeCYL.value = "";
+
+    rightEyeAXIS.value = "";
+
+    leftEyeSPH.value = "";
+
+    leftEyeCYL.value = "";
+
+    leftEyeAXIS.value = "";
+
+
+    rightGlassSPH.value = "";
+
+    rightGlassCYL.value = "";
+
+    rightGlassAXIS.value = "";
+
+    leftGlassSPH.value = "";
+
+    leftGlassCYL.value = "";
+
+    leftGlassAXIS.value = "";
+
+
+    noteInput.value = "";
+
+
+    clearCanvas();
+
+}
+
+
+clearButton.addEventListener(
+    "click",
+    function(){
+
+        clearForm();
+
+        formMessage.textContent = "";
+
+    }
+);
+
+
+/* ================= EDIT PATIENT ================= */
+
+function editPatient(id){
+
+    const patient =
+        patients.find(
+            p => p.id === id
+        );
+
+    if(!patient){
+        return;
+    }
+
+
+    editingId = id;
+
+
+    formTitle.textContent =
+        "✏️ ویرایش پرونده بیمار";
+
+    saveButton.textContent =
+        "ذخیره تغییرات";
+
+
+    nameInput.value =
+        patient.name || "";
+
+    nationalCodeInput.value =
+        patient.nationalCode || "";
+
+    fatherNameInput.value =
+        patient.fatherName || "";
+
+    addressInput.value =
+        patient.address || "";
+
+    mainInsuranceInput.value =
+        patient.mainInsurance || "";
+
+    supplementaryInsuranceInput.value =
+        patient.supplementaryInsurance || "";
+
+    supplementaryNumberInput.value =
+        patient.supplementaryNumber || "";
+
+    phoneInput.value =
+        patient.phone || "";
+
+    reasonInput.value =
+        patient.reason || "";
+
+    diseaseInput.value =
+        patient.disease || "";
+
+    visitInput.value =
+        patient.visit || "";
+
+
+    rightEyeSPH.value =
+        patient.rightEyeSPH || "";
+
+    rightEyeCYL.value =
+        patient.rightEyeCYL || "";
+
+    rightEyeAXIS.value =
+        patient.rightEyeAXIS || "";
+
+
+    leftEyeSPH.value =
+        patient.leftEyeSPH || "";
+
+    leftEyeCYL.value =
+        patient.leftEyeCYL || "";
+
+    leftEyeAXIS.value =
+        patient.leftEyeAXIS || "";
+
+
+    rightGlassSPH.value =
+        patient.rightGlassSPH || "";
+
+    rightGlassCYL.value =
+        patient.rightGlassCYL || "";
+
+    rightGlassAXIS.value =
+        patient.rightGlassAXIS || "";
+
+
+    leftGlassSPH.value =
+        patient.leftGlassSPH || "";
+
+    leftGlassCYL.value =
+        patient.leftGlassCYL || "";
+
+    leftGlassAXIS.value =
+        patient.leftGlassAXIS || "";
+
+
+    noteInput.value =
+        patient.note || "";
+
+
+    clearCanvas();
+
+
+    if(patient.handwriting){
+
+        const image =
+            new Image();
+
+        image.onload =
+            function(){
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                ctx.drawImage(
+                    image,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+            };
+
+        image.src =
+            patient.handwriting;
+
+    }
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* ================= DELETE PATIENT ================= */
+
+function deletePatient(id){
+
+    const patient =
+        patients.find(
+            p => p.id === id
+        );
+
+    if(!patient){
+        return;
+    }
+
+
+    const ok =
+        confirm(
+            "آیا از حذف پرونده «" +
+            patient.name +
+            "» مطمئن هستید؟"
+        );
+
+
+    if(!ok){
+        return;
+    }
+
+
+    patients =
+        patients.filter(
+            p => p.id !== id
+        );
+
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(patients)
+    );
+
+
+    showPatients();
+
+}
+
+
+/* ================= DISPLAY ================= */
+
+function safe(value){
+
+    if(
+        value === undefined ||
+        value === null ||
+        value === ""
+    ){
+        return "—";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function showPatients(){
+
+    const search =
+        searchInput.value
+        .trim()
+        .toLowerCase();
+
+
+    const filtered =
+        patients.filter(
+            p => {
+
+                const text =
+                    (
+                        (p.name || "") +
+                        " " +
+                        (p.nationalCode || "") +
+                        " " +
+                        (p.phone || "") +
+                        " " +
+                        (p.fatherName || "")
+                    ).toLowerCase();
+
+                return text.includes(search);
+
+            }
+        );
+
+
+    if(filtered.length === 0){
+
+        patientsList.innerHTML =
+            '<div class="empty">هنوز بیماری ثبت نشده است.</div>';
+
+        return;
+
+    }
+
+
+    patientsList.innerHTML =
+        filtered.map(
+            p => `
+
+            <div class="patient">
+
+                <h3>
+                    👤 ${safe(p.name)}
+                </h3>
+
+
+                <table class="info-table">
+
+                    <tr>
+                        <td>کد ملی</td>
+                        <td>${safe(p.nationalCode)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>نام پدر</td>
+                        <td>${safe(p.fatherName)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>شماره تماس</td>
+                        <td>${safe(p.phone)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>علت مراجعه</td>
+                        <td>${safe(p.reason)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>بیماری‌های خاص</td>
+                        <td>${safe(p.disease)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>آخرین ویزیت</td>
+                        <td>${safe(p.visit)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>آدرس</td>
+                        <td>${safe(p.address)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>بیمه اصلی</td>
+                        <td>${safe(p.mainInsurance)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>بیمه تکمیلی</td>
+                        <td>${safe(p.supplementaryInsurance)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>شماره بیمه تکمیلی</td>
+                        <td>${safe(p.supplementaryNumber)}</td>
+                    </tr>
+
+                </table>
+
+
+                <h4 class="section-title">
+                    👁️ اطلاعات بینایی
+                </h4>
+
+
+                <table class="info-table">
+
+                    <tr>
+                        <td>چشم راست (OD)</td>
+                        <td>
+                            SPH: ${safe(p.rightEyeSPH)}
+                            <br>
+                            CYL: ${safe(p.rightEyeCYL)}
+                            <br>
+                            AXIS: ${safe(p.rightEyeAXIS)}
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>چشم چپ (OS)</td>
+                        <td>
+                            SPH: ${safe(p.leftEyeSPH)}
+                            <br>
+                            CYL: ${safe(p.leftEyeCYL)}
+                            <br>
+                            AXIS: ${safe(p.leftEyeAXIS)}
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>عینک راست (OD)</td>
+                        <td>
+                            SPH: ${safe(p.rightGlassSPH)}
+                            <br>
+                            CYL: ${safe(p.rightGlassCYL)}
+                            <br>
+                            AXIS: ${safe(p.rightGlassAXIS)}
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>عینک چپ (OS)</td>
+                        <td>
+                            SPH: ${safe(p.leftGlassSPH)}
+                            <br>
+                            CYL: ${safe(p.leftGlassCYL)}
+                            <br>
+                            AXIS: ${safe(p.leftGlassAXIS)}
+                        </td>
+                    </tr>
+
+                </table>
+
+
+                <h4 class="section-title">
+                    🩺 شرح حال پزشک
+                </h4>
+
+
+                <div class="patient-note">
+                    ${safe(p.note)}
+                </div>
+
+
+                ${
+                    p.handwriting
+                    ?
+                    `
+                    <h4 class="section-title">
+                        ✍️ شرح حال دست‌نویس
+                    </h4>
+
+                    <img
+                        class="handwriting"
+                        src="${p.handwriting}"
+                        alt="شرح حال دست‌نویس"
+                    >
+                    `
+                    :
+                    ""
+                }
+
+
+                <div class="actions">
+
+                    <button
+                        type="button"
+                        class="primary"
+                        onclick="editPatient('${p.id}')"
+                    >
+                        ✏️ ویرایش
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="danger"
+                        onclick="deletePatient('${p.id}')"
+                    >
+                        🗑️ حذف
+                    </button>
+
+                </div>
+
+            </div>
+
+            `
+        )
+        .join("");
+
+}
+
+
+/* ================= SEARCH ================= */
+
+searchInput.addEventListener(
+    "input",
+    showPatients
+);
+
+
+/* ================= EXPORT ================= */
+
+exportButton.addEventListener(
+    "click",
+    function(){
+
+        if(patients.length === 0){
+
+            alert(
+                "هنوز اطلاعات بیماری برای پشتیبان‌گیری وجود ندارد."
+            );
+
+            return;
+
+        }
+
+
+        const data =
+            JSON.stringify(
+                patients,
+                null,
+                2
+            );
+
+
+        const blob =
+            new Blob(
+                [data],
+                {
+                    type:"application/json"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const a =
+            document.createElement("a");
+
+        a.href = url;
+
+        a.download =
+            "medicall-backup.json";
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(url);
+
+    }
+);
+
+
+/* ================= IMPORT ================= */
+
+importFile.addEventListener(
+    "change",
+    function(event){
+
+        const file =
+            event.target.files[0];
+
+        if(!file){
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function(e){
+
+                try{
+
+                    const imported =
+                        JSON.parse(
+                            e.target.result
+                        );
+
+
+                    if(!Array.isArray(imported)){
+
+                        alert(
+                            "فایل پشتیبان معتبر نیست."
+                        );
+
+                        return;
+
+                    }
+
+
+                    patients =
+                        imported;
+
+
+                    localStorage.setItem(
+                        STORAGE_KEY,
+                        JSON.stringify(patients)
+                    );
+
+
+                    showPatients();
+
+
+                    alert(
+                        "اطلاعات با موفقیت بازیابی شد."
+                    );
+
+
+                }catch(error){
+
+                    alert(
+                        "خواندن فایل پشتیبان ناموفق بود."
+                    );
+
+                }
+
+            };
+
+
+        reader.readAsText(file);
+
+    }
+);
+
+
+/* ================= START ================= */
+
+showPatients();
+
+</script>
+
+</body>
+</html>
